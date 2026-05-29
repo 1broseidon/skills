@@ -1,0 +1,51 @@
+# macOS / editor noise
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Local environment / secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Python caches and tooling
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.venv/
+venv/
+
+# Node / package-manager output
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build / generated output
+dist/
+build/
+out/
+tmp/
+temp/
+*.log
+
+# Local agent/runtime state
+.anvil/
+.recoil/
+.codex/
