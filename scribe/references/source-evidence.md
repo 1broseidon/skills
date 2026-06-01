@@ -8,11 +8,12 @@ This is scribe's anti-slop spine. Every behavioral claim in a doc traces back to
 
 | Level | Meaning | Use in docs |
 | --- | --- | --- |
-| **Observed** | Read from a source line, or produced by a command you ran | Strongest. State plainly. Cite the source. |
-| **Derived** | Inferred from source structure or framework convention | State it, but soften ("retries transient errors") rather than overclaim a specific policy. |
-| **Stated** | Found in an existing README, comment, issue, or changelog | Useful lead, may be stale. Verify before repeating as fact. |
-| **Missing** | The doc needs this fact and it is not in the code | Do not invent. Flag it, placeholder it, or ask. |
-| **Unknown** | Not checked, not knowable from the current target | Do not guess. Say what was not checked. |
+| `observed` | Read from a source line, or produced by a command you ran | Strongest. State plainly. Cite the source. |
+| `derived` | Inferred from source structure or framework convention | State it, but soften ("retries transient errors") rather than overclaim a specific policy. |
+| `stated` | Found in an existing README, comment, issue, or changelog | Useful lead, may be stale. Verify before repeating as fact. |
+| `absent` | You searched the relevant code and the fact is not there | Do not invent. Flag it, placeholder it, or cut. |
+
+A fact that was never checked is not an evidence level. Resolve it during inventory until it becomes `observed`, `derived`, or `absent`, or flag it as out of scope. A check that cannot be run in this environment is recorded as `not run` (see verification.md); an audit finding that could not be verified uses the `unknown` status (see verbs/audit.md). Neither is a claim-evidence level.
 
 Prefer **observed** for anything that affects what a reader will type, call, or rely on. A documented default, signature, flag, route, or return type should be observed, not assumed.
 
@@ -30,7 +31,7 @@ Examples:
 - `default page size 50 | observed | handler.go L22 | "returns 50 items by default"`
 - `retries on network error | derived | client.go retry wrapper | "retries transient failures"`
 - `requires Node 18+ | stated | package.json engines, unverified | flag for confirmation`
-- `rate limit 100 req/min | missing | no limiter in source | OMIT — do not document`
+- `rate limit 100 req/min | absent | no limiter in source | OMIT — do not document`
 
 Any claim below **derived** is flagged, placeholdered, or cut. The ledger is the difference between a doc that ages well and one that lies by next release.
 
@@ -115,12 +116,12 @@ For command evidence, include the command:
 Observed via `search --help | cat`: 8 subcommands, exit codes 0/1/2.
 ```
 
-## When evidence is missing
+## When evidence is absent
 
-Say so. Missing evidence is a finding, not a license to invent:
+Say so. Absent evidence is a finding, not a license to invent:
 
 - "No rate limiter in source; rate-limit docs omitted."
 - "Default not found in code; asked the user to confirm."
 - "Snippet not executed; toolchain not present in this environment."
 
-A missing fact, clearly marked, is honest. An invented one is the failure scribe exists to prevent.
+An absent fact, clearly marked, is honest. An invented one is the failure scribe exists to prevent.

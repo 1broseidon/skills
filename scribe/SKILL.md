@@ -1,7 +1,7 @@
 ---
 name: scribe
 description: "Documentation craft skill for project docs that match the code and read well. Use when writing, auditing, syncing, or extracting documentation: READMEs, API references, tutorials, how-to guides, explanations, architecture notes, changelogs, runbooks, and in-code API docs. Enforces evidence-level claims (no fabricated flags, endpoints, params, defaults, or return types), Diátaxis-aligned structure, audience fit, drift detection, and prose that earns its length."
-version: 0.3.0
+version: 0.3.1
 ---
 
 # Scribe
@@ -163,7 +163,7 @@ Apply before handoff. Any `no` triggers a fix. Do not hand off with a failing ga
 | `no-fabricated` | No invented flags, routes, signatures, defaults, or error codes |
 | `links-resolve` | Every internal link and anchor resolves |
 
-**Fix loop:** gate fails → fix the cause → re-run that gate → confirm `yes`. Repeat until all gates pass.
+**Fix loop:** gate fails → fix the cause → re-run that gate → confirm `yes`. Repeat until all gates pass. The six gates summarize the per-type checks in `references/slop-test.md`; consult that file for the doc type in play.
 
 ### 6. Handoff
 

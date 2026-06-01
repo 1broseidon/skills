@@ -29,7 +29,7 @@ When a gate fails: fix the doc, re-run the relevant block, re-emit the slop row.
 | U15 | Is the audience inconsistent (jargon-free intro, then unexplained internals, then back)? |
 | U16 | Did I omit expected output for a command where the reader can't tell success from failure? |
 | U17 | Did I describe behavior as "derived" but write it as a hard guarantee? |
-| U18 | Did I omit the self-critique stamp? |
+| U18 | Did I hand off with any binary gate still failing (claims-sourced, outline-holds-mode, snippets-honest, defaults-match, no-fabricated, links-resolve)? |
 
 ---
 

@@ -1,8 +1,8 @@
 # Scribe roadmap
 
-## v0.1.0 — current
+## v0.3.1 — current
 
-- Core loop: Audience → Doc Type → Source Evidence → Outline → Draft → Truth-Check → Readability Pass
+- Core loop: Inventory → Picks → Ledger → Draft → Truth-check → Gates → Handoff
 - Verbs: default write, `audit`, `sync`, `extract`
 - Diátaxis-aligned doc types with deep files for tutorial, how-to, reference, explanation, README
 - Source-evidence discipline and claim ledger

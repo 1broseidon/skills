@@ -1,5 +1,14 @@
 # Scribe
 
+> [!IMPORTANT]
+> **This repository has moved.** Scribe now lives in the [`1broseidon/skills`](https://github.com/1broseidon/skills) monorepo.
+>
+> Install it with:
+> ```bash
+> npx skills add 1broseidon/skills --skill scribe
+> ```
+> This standalone repo is archived and no longer updated.
+
 **A documentation craft skill for AI coding agents — docs that read like they were written by someone who read the code.**
 
 Scribe helps an agent write, audit, sync, and extract project documentation that matches the code, fits the reader, and earns its length. It exists to stop the most common failure mode of generated docs: confident sentences about flags, defaults, and behavior that the code does not actually have.
@@ -19,7 +28,7 @@ Scribe is language-agnostic and covers:
 Every run follows one loop:
 
 ```text
-Audience -> Doc Type -> Source Evidence -> Outline -> Draft -> Truth-Check -> Readability Pass
+Inventory -> Picks -> Ledger -> Draft -> Truth-check -> Gates -> Handoff
 ```
 
 ## What makes it different
@@ -36,7 +45,7 @@ Audience -> Doc Type -> Source Evidence -> Outline -> Draft -> Truth-Check -> Re
 Install from the public GitHub repo with the `skills` CLI:
 
 ```bash
-npx skills add 1broseidon/scribe
+npx skills add 1broseidon/skills --skill scribe
 ```
 
 The `skills` CLI is documented at [skills.sh](https://skills.sh/docs/cli).
@@ -119,7 +128,7 @@ The full skill entrypoint is [SKILL.md](SKILL.md).
 
 ## Status
 
-Version `0.1.0` — initial release. Deep files exist for tutorial, how-to, reference, explanation, and README; architecture, changelog, and runbook are covered by their index rows with deep files planned. See [ROADMAP.md](ROADMAP.md).
+Version `0.3.1`. Deep files exist for tutorial, how-to, reference, explanation, and README; architecture, changelog, and runbook are covered by their index rows with deep files planned. See [ROADMAP.md](ROADMAP.md).
 
 ## Contributing
 
@@ -129,4 +138,3 @@ Issues and pull requests are welcome at [github.com/1broseidon/scribe](https://g
 
 Scribe does not write marketing or landing copy, blog posts, legal/policy text, slide decks, or UI microcopy. It does not run full docs-site IA migrations or localization workflows. It can still help with the technical documentation around any of those.
 
-<!-- Scribe · critique: Acc5 Aud5 Str5 Comp4 Con4 Lnk5 Ex5 -->
