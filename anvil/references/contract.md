@@ -6,11 +6,11 @@ Load at handoff.
 
 Every Anvil handoff should answer:
 
-- **Boundary:** one target, kind, scope, and caller profile
+- **Boundary:** one target boundary, kind, scope, and caller profile
 - **Contract ledger:** public surfaces preserved, added, changed, deprecated, removed, or moved
 - **Obligations:** what the boundary now guarantees, and anything intentionally deferred
 - **Verification:** commands/evidence run, result, and checks not run
-- **Residual risk:** unresolved P2s, missing evidence, or approvals still needed
+- **Residual risk:** unresolved P2s, absent evidence, or approvals still needed
 
 ## Scope rules
 
@@ -34,21 +34,21 @@ Every Anvil handoff should answer:
 Use a stamp where it helps future audits. Prefer comments in entrypoint/contract files, not random internals.
 
 ```go
-// Anvil · target: <path> · kind: cli|rest|grpc|package|structure · boundary: <scope>
-// callers: <profiles> · pattern: <surface-pattern|none> · risk: <R-classes>
+// Anvil · target: <path> · kind: cli|rest|grpc|package|structure · scope: <command|tool|service|package|structure>
+// caller profile: <profiles> · surface pattern: <surface-pattern|none> · risk class: <R-classes>
 // contracts: <artifact-list> · obligations: <short-list>
 ```
 
-For structure-scope, the durable record lives in `.anvil/log.json`, `anvil.md`, and `.anvil/*report.md`.
+For structure scope, the durable record lives in `.anvil/log.json`, `anvil.md`, and `.anvil/*report.md`.
 
 ## Artifacts
 
 | Scope | Artifact |
 | --- | --- |
-| Tool-scope CLI | `conventions.yaml` |
+| Tool scope CLI | `conventions.yaml` |
 | REST service | `openapi.yaml` or existing OpenAPI file |
 | gRPC service | `api/<service>.proto` or existing proto |
 | Package API | export/API table in docs or `anvil.md` |
-| Structure-scope | `.anvil/sweep-report.md`, layout rule in `anvil.md` |
+| Structure scope | `.anvil/sweep-report.md`, layout rule in `anvil.md` |
 
 When `anvil.md` exists, it is the locked convention file. Refresh it instead of creating competing records.

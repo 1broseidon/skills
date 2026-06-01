@@ -1,6 +1,8 @@
 # Caller profile · agent
 
-For CLIs and services **designed to be called by AI agents, scripts, and other programs** as much as by humans. The 2025–2026 genre that didn't exist when most CLI conventions were written. Examples to study: `gh`, `jq`, `rg`, `cymbal`, `ketch`, `op` (1Password), `aws --output json`.
+Caller profile reference. (Path is `genres/` for legacy reasons; the canonical term is caller profile.)
+
+For CLIs and services **designed to be called by AI agents, scripts, and other programs** as much as by humans. The 2025–2026 caller profile that didn't exist when most CLI conventions were written. Examples to study: `gh`, `jq`, `rg`, `cymbal`, `ketch`, `op` (1Password), `aws --output json`.
 
 The defining inversion: **the machine is the primary user; the human is the rarer one.** Every design pick is graded on "does an LLM / shell pipeline get the right answer in one call?" before "does it look nice to a human reading help?"
 

@@ -6,7 +6,7 @@ Emit **`.proto` skeleton** on every **service-scope** build ([`grpc-proto.md`](g
 
 ## Diversification
 
-Differ from last 3 gRPC runs for this `target`.
+Differ from the last 3 entries for this target only when the target is genuinely new and unrelated; within an established convention, coherence wins.
 
 ## Index (v1)
 

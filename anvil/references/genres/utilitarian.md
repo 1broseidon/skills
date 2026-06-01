@@ -1,5 +1,7 @@
 # Caller profile · script
 
+Caller profile reference. (Path is `genres/` for legacy reasons; the canonical term is caller profile.)
+
 For developer tools, automation, CI jobs, and backend surfaces where predictable composition matters more than prose.
 
 ## CLI

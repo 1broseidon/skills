@@ -1,6 +1,6 @@
 # Contract ledger
 
-The contract ledger is Anvil's backend-native preview. It makes caller-visible changes impossible to hide.
+The contract ledger is Anvil's backend-native record. It makes caller-visible changes impossible to hide.
 
 ## Format
 

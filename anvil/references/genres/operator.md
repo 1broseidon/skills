@@ -1,5 +1,7 @@
 # Caller profile · human-operator
 
+Caller profile reference. (Path is `genres/` for legacy reasons; the canonical term is caller profile.)
+
 For SREs, platform engineers, on-call engineers, and humans operating production systems.
 
 ## CLI

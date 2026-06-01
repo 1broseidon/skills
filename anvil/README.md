@@ -80,7 +80,7 @@ anvil study <source>           # extract backend DNA from source/help/OpenAPI/pr
 
 ## Current Status
 
-Version: `0.3.0`
+Version: `0.4.0`
 
 The current release has been stress-tested with three fixtures:
 

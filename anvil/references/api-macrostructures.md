@@ -6,7 +6,7 @@ Emit **`openapi.yaml`** on every **service-scope** build ([`openapi.md`](openapi
 
 ## Diversification
 
-Differ from last 3 REST runs for this `target`. Default away from **CRUD-Five**.
+Differ from the last 3 entries for this target only when the target is genuinely new and unrelated; within an established convention, coherence wins. Default away from **CRUD-Five**.
 
 ## Index (v1)
 

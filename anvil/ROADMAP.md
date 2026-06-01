@@ -1,6 +1,6 @@
 # Anvil roadmap
 
-## v0.3.0 (current)
+## v0.3.0
 
 **Theme: Backend-native flow**
 
@@ -36,9 +36,17 @@
   - dead-code sweep report
 - [ ] Turn benchmark rubric into executable fixtures
 
-## v0.4.0
+## v0.4.0 (current)
 
-**Theme: Evidence collectors + smoke harness**
+**Theme: Tightened core and reference reconciliation**
+
+- [x] Rewrote `SKILL.md` around evidence-first boundary inventory and controlled vocabulary
+- [x] Replaced self-critique stamps with binary gates and an enforced fix loop
+- [x] Reconciled evidence levels to observed, derived, stated, absent
+- [x] Suppressed surface-pattern exploration inside established backend conventions
+- [x] Reconciled references and examples with v0.4.0 stamp labels, gates, and caller profile vocabulary
+
+## v0.4.x
 
 - [ ] `scripts/anvil_inventory.*` — capture help/routes/proto/package/layout evidence into JSON
 - [ ] `scripts/anvil_smoke_cli.*` — run `--help`, `--version`, invalid args, JSON output, `NO_COLOR`

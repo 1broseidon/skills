@@ -1,10 +1,10 @@
 # Slop test
 
-**Load only at Step 7.** The gates are a post-emit check, not a pre-emit reference. Pre-loading costs tokens for nothing — `anti-patterns.md` is the pre-emit guide.
+**Load at the verification step, after the build.** The gates are a post-emit check, not a pre-emit reference. Pre-loading costs tokens for nothing; `anti-patterns.md` is the pre-emit guide.
 
 Every gate is a question whose answer must be **NO** (i.e., you must not exhibit the failure).
 
-When a gate fails: fix the output, re-run the relevant gate block, re-emit the preview slop row.
+When a gate fails: fix the output, re-run the relevant gate block, re-emit the slop row.
 
 ---
 
@@ -21,7 +21,7 @@ When a gate fails: fix the output, re-run the relevant gate block, re-emit the p
 | U07 | Is cancellation undocumented for operations expected to run > 2s? |
 | U08 | Did I copy another service's command/route/proto tree wholesale in a monorepo? |
 | U09 | Are error messages non-actionable (`Error`, `failed`, `something went wrong`)? |
-| U10 | Did I omit the stamp and/or fail to append `.anvil/log.json`? |
+| U10 | Did I fail to append `.anvil/log.json` with this run's entry? |
 | U11 | Does a backend-specific flag activate when a different backend is selected? |
 | U12 | Did I emit a 202 without a `Location` header or `status_url` body field? |
 | U13 | Did I use different error envelope shapes in the same service? |
@@ -163,7 +163,7 @@ Run this block when the structural axis was in scope (pre-flight surfaced struct
 
 ---
 
-## Genre overrides
+## Caller profile overrides
 
 **human-operator** profile: Stricter on exit codes (C05), operational endpoints (HEALTH-01 required), log cardinality. Looser on friendly empty-state messages.
 
@@ -183,7 +183,7 @@ Run this block when the structural axis was in scope (pre-flight surfaced struct
 - **P1** (contract drift, schema inconsistency): fix before emitting. Do not hand back.
 - **P2** (polish, documentation gaps, non-critical): note in preview; fix before `lock the surface`.
 
-Update the preview slop row to reflect the actual outcome after fixes:
+Update the slop row to reflect the actual outcome after fixes:
 
 ```markdown
 - **Slop test** · U: 20/20 · C: 15/15 · A: 10/10 · R: 0/15 (n/a) · G: 0/15 (n/a) · S: 14/15 (S08 flagged 3 dead exports — sweep scheduled)

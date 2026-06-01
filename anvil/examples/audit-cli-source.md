@@ -105,19 +105,14 @@ Clean inside the 15-verb ceiling. Verbs are non-overlapping; no obvious candidat
 
 ---
 
-## Macrostructure self-critique
+## Binary gates
 
-```
-/* Anvil · audit critique: I5 E5 C4 Err4 O4 S4 V4 */
-```
-
-- **Intent (5):** `--help` and README both make the subject ("import graph") explicit on the first line.
-- **Ergonomics (5):** 9 verbs comfortably under ceiling; persistent `--json`, `--minimal`, `--max-chars` form the agentic trio.
-- **Contracts (4):** `--json` schema appears stable; `conventions.yaml` missing.
-- **Errors (4):** Exit codes 0/1/2 documented; 4 (upstream) and 6 (cancelled) not used — could granulate.
-- **Operability (4):** Version ✓, completion ✓, config introspection ✓; silent backend fail-over (A07) drags the score.
-- **Structure (4):** Flat layout justified; module split clean; dead-code sweep pending.
-- **Variety (4):** Not applicable for audit.
+- evidence-cited: yes
+- contract-ledger-complete: yes
+- risk-classified: yes
+- obligations-stated-or-deferred: yes
+- no-fabricated-facts: yes
+- verification-runnable: yes
 
 ---
 

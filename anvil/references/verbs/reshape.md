@@ -24,7 +24,7 @@ Reshape keeps domain intent and caller commitments while improving a backend sur
 5. **File plan** — exact modify/create/move/delete list. R4/R5 requires explicit approval unless already given.
 6. **Implement** — narrow edits, existing stack, compatibility shims for public surfaces.
 7. **Verification matrix** — load [`../verification.md`](../verification.md); run checks.
-8. **Slop gates** — load [`../slop-test.md`](../slop-test.md); fix P0/P1.
+8. **Slop gates** — load [`../slop-test.md`](../slop-test.md) after verification; fix P0/P1.
 9. **Record** — update stamps, `.anvil/log.json`, and convention artifacts.
 
 ---
@@ -116,8 +116,8 @@ Load [`../shared-packages.md`](../shared-packages.md). Inventory exports and cal
 ## Stamp
 
 ```go
-// Anvil · target: cmd/search · kind: cli · boundary: tool
-// callers: script,agent · risk: R1,R2 · contracts: conventions.yaml
+// Anvil · target: cmd/search · kind: cli · scope: tool
+// caller profile: script,agent · risk class: R1,R2 · contracts: conventions.yaml
 // obligations: version,exit-codes,json,minimal,config
 ```
 

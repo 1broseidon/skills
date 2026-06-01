@@ -6,11 +6,12 @@ Anvil starts with evidence. The goal is not to exhaustively reverse-engineer the
 
 | Level | Meaning | Use |
 | --- | --- | --- |
-| **Observed** | Command output, source line, generated contract, compiled test | Strongest evidence; cite it |
-| **Derived** | Inferred from source structure or framework convention | Say "derived" |
-| **Stated** | README, docs, comments, issue text | Useful but may be stale |
-| **Missing** | Expected contract or hook absent | Finding candidate |
-| **Unknown** | Not checked, not knowable from current target | Do not guess |
+| `observed` | Command output, source line, generated contract, compiled test | Strongest; cite it |
+| `derived`  | Inferred from source structure or framework convention | Say "derived" |
+| `stated`   | README, docs, comments, issue text | Useful lead, may be stale; verify before repeating |
+| `absent`   | You searched the relevant code and the expected contract is not there | Finding candidate; do not invent |
+
+A fact that was never checked is not an evidence level. Resolve it during inventory until it becomes `observed`, `derived`, or `absent`. A check that cannot be run in this environment is recorded as `not run` in the verification matrix (see verification.md). Neither is an evidence level.
 
 Prefer "observed" for anything that affects caller behavior.
 
@@ -111,7 +112,7 @@ For command evidence, include the command:
 Observed via `NO_COLOR=1 search --help | cat`: no ANSI escapes.
 ```
 
-## Missing evidence
+## Absent evidence
 
 Say when a check was not possible:
 
@@ -119,4 +120,4 @@ Say when a check was not possible:
 - "OpenAPI exists, but server route listing requires app startup."
 - "Package is public; unused exports inside the repo are not proof of dead code."
 
-Missing evidence is not failure by itself. It becomes a finding only when the boundary requires that evidence.
+Absent evidence is not failure by itself. It becomes a finding only when the boundary requires that evidence.

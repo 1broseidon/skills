@@ -91,7 +91,7 @@ Structural: S09
 ## Rules
 
 - Do not edit files during audit.
-- Do not fabricate findings. Use "unknown" when evidence is missing.
+- Do not fabricate findings. Use `absent` when a searched contract is not there, and `not run` when a check could not run.
 - Do not call a public package export "dead" only because no in-repo caller exists.
 - Do not recommend full rewrites unless the user asked or the boundary is unsalvageable.
 - If source is unavailable, label the audit `surface-only`.

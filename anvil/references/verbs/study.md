@@ -37,7 +37,7 @@ Refuse template marketplaces, scaffold tutorial repos, auth-walled private APIs,
 3. **Caller profile.** Identify human-operator, script, agent, SDK client, internal admin.
 4. **Contract style.** Identify command/route/RPC/package shape, error envelope, config story, output formats, versioning/deprecation behavior.
 5. **Obligations.** Load [`../obligations.md`](../obligations.md). Note which obligations the reference satisfies or misses.
-6. **Verification limits.** Load [`../verification.md`](../verification.md). State what was confirmed vs inferred.
+6. **Verification limits.** Load [`../verification.md`](../verification.md). State evidence levels and checks not run.
 7. **Diagnosis.** Emit report and ask whether to build, lock DNA, change one axis, or stop.
 
 ---
@@ -63,7 +63,7 @@ For safe sample commands, test:
 - config/version introspection if available
 - completion command if advertised
 
-Label structural findings as unknown unless source is available.
+Label structural checks as not run unless source is available.
 
 ---
 
@@ -75,9 +75,9 @@ Label structural findings as unknown unless source is available.
 ## Evidence pack
 
 - Mode: binary-only
-- Confirmed: help tree, version, NO_COLOR, JSON output, invalid-input exit code
-- Inferred: config precedence from help text
-- Unknown: source layout, dead code, import direction
+- observed: help tree, version, NO_COLOR, JSON output, invalid-input exit code
+- derived: config precedence from help text
+- not run: source layout, dead code, import direction
 
 ## Backend DNA
 

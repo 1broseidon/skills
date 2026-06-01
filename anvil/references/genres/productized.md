@@ -1,5 +1,7 @@
 # Caller profile · sdk-client
 
+Caller profile reference. (Path is `genres/` for legacy reasons; the canonical term is caller profile.)
+
 For public APIs, SDK consumers, and customer-facing developer surfaces.
 
 ## CLI

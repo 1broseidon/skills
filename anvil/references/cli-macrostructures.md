@@ -4,7 +4,7 @@
 
 ## Diversification
 
-Must differ from last 3 entries for this `target` in `.anvil/log.json`. Default away from **Generic-Root-Run**.
+Differ from the last 3 entries for this target only when the target is genuinely new and unrelated; within an established convention, coherence wins. Default away from **Generic-Root-Run**.
 
 ## Index (v0.3 — surface patterns)
 

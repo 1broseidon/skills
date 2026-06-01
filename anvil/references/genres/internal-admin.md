@@ -1,5 +1,7 @@
 # Caller profile · internal-admin
 
+Caller profile reference. (Path is `genres/` for legacy reasons; the canonical term is caller profile.)
+
 For staff tools, support backends, and permission-dense maintenance surfaces.
 
 ## CLI
