@@ -33,12 +33,12 @@ Inventory -> Picks -> Ledger -> Draft -> Truth-check -> Gates -> Handoff
 
 ## What makes it different
 
-- **Source-truth.** No invented flags, endpoints, parameters, defaults, return types, or version claims. Every behavioral fact traces to a source line or a command that was run — tracked in a claim ledger before a word is drafted.
-- **Doc-type discipline.** Types follow [Diátaxis](https://diataxis.fr/) (tutorial / how-to / reference / explanation) plus README, architecture, changelog, and runbook. One mode per page — no tutorials that drift into reference, no references that start teaching.
+- **Evidence-level claims.** Every behavioral fact traces to a source line or a command that was run, and carries an evidence level (`observed`, `derived`, `stated`, or `absent`). Claims are tracked in a ledger before a word is drafted.
+- **Doc-type discipline.** Types follow [Diátaxis](https://diataxis.fr/) (tutorial / how-to / reference / explanation) plus README, architecture, changelog, and runbook. One mode per page.
 - **Audience fit.** New users, integrators, contributors, operators, and decision-makers get different depth, vocabulary, and ordering. Pick one primary reader; route the rest.
-- **Drift detection.** `scribe sync` reconciles a doc against current code and reports every mismatch — phantom flags, stale defaults, broken examples — in a drift ledger.
-- **Verification, not vibes.** Documented surface is checked against source; code snippets are executed when the toolchain allows, and explicitly marked "not run" when it doesn't.
-- **Prose that earns its length.** Prose where understanding is the goal, tables and lists where lookup is. Filler, false ease ("simply", "just"), and marketing adjectives are cut.
+- **Drift detection.** `scribe sync` reconciles a doc against current code and reports every mismatch (phantom flags, stale defaults, broken examples) in a drift ledger.
+- **Binary gates.** Six pass/fail checks before handoff: `claims-sourced`, `outline-holds-mode`, `snippets-honest`, `defaults-match`, `no-fabricated`, `links-resolve`. Any failure triggers a fix loop.
+- **Prose that earns its length.** Prose where understanding is the goal, tables and lists where lookup is. Filler, false ease, and marketing adjectives are cut.
 
 ## Install
 
@@ -68,19 +68,23 @@ Ask the agent to document something, and scribe works the loop out loud before w
 ```text
 > scribe sync README.md
 
-Source inventory:
+Inventory:
 · Subject: cli `search` (Go/cobra) — 8 commands from live --help
-· Doc type: README · Audience: new user
+· Surface: SEARCH_ env prefix, exit codes 0/1/2
 · Existing: README claims --format (removed in cmd/root.go L52)
 
-Drift reconciled:
-| Doc claim      | Code reality          | Fix            | Verification   |
-| --------       | ------------          | ---            | ------------   |
-| `--format`     | removed cmd/root.go52 | deleted        | `search --help`|
-| "defaults 30s" | config.go L18 = 60s   | corrected      | grep config.go |
+Picks: doc-type=README · audience=new user · mode=orientation
 
-Verification: flags vs --help pass · quick-start ran pass · links pass
-Fixed 2 (1 phantom, 1 stale default). Left flagged: "Postgres 14+" — no manifest evidence.
+Ledger:
+  --json flag exists     | observed | cmd/root.go L40   | feature list
+  default timeout 30s    | absent   | config.go L18=60s | corrected to 60s
+  --format flag          | absent   | grep found nothing | removed from doc
+
+Truth-check: flags vs --help (pass), defaults vs code (pass), links (pass)
+Gates: claims-sourced=yes, outline-holds-mode=yes, snippets-honest=yes,
+       defaults-match=yes, no-fabricated=yes, links-resolve=yes
+
+Fixed 2 (1 phantom flag, 1 stale default). Flagged: "Postgres 14+" — no manifest.
 ```
 
 The accuracy work is the point. Scribe reports what it corrected, what it verified, and what it left flagged.
@@ -120,6 +124,7 @@ The full skill entrypoint is [SKILL.md](SKILL.md).
 │   ├── slop-test.md
 │   ├── anti-patterns.md
 │   ├── scribe-md.md             # opt-in convention artifact
+│   ├── philosophy.md            # human-only design rationale
 │   └── verbs/                   # audit, sync, extract
 ├── examples/                    # human-only examples
 ├── ROADMAP.md
@@ -132,7 +137,7 @@ Version `0.3.1`. Deep files exist for tutorial, how-to, reference, explanation, 
 
 ## Contributing
 
-Issues and pull requests are welcome at [github.com/1broseidon/scribe](https://github.com/1broseidon/scribe). Scribe is built to its own standard — proposed docs and references should pass the [slop test](references/slop-test.md).
+Issues and pull requests are welcome at [github.com/1broseidon/skills](https://github.com/1broseidon/skills). Scribe is built to its own standard: proposed docs and references should pass the [slop test](references/slop-test.md).
 
 ## Out of scope
 
