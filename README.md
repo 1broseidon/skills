@@ -9,7 +9,7 @@ Each subdirectory is a self-contained skill with its own `SKILL.md` and referenc
 | Skill | Version | What it does |
 | --- | --- | --- |
 | [anvil](anvil/) | `0.3.0` | Backend craft skill for language-agnostic CLIs, REST APIs, gRPC services, package APIs, and backend repo structure. Build, audit, reshape, or study backend surfaces with contract honesty and evidence-backed verification. |
-| [scribe](scribe/) | `0.1.0` | Documentation craft skill for project docs that match the code and read well. Write, audit, sync, or extract READMEs, API references, tutorials, how-tos, explanations, and in-code docs — source-true and drift-aware. |
+| [scribe](scribe/) | `0.3.1` | Documentation craft skill for project docs that match the code and read well. Write, audit, sync, or extract READMEs, API references, tutorials, how-tos, explanations, and in-code docs — source-true and drift-aware. |
 
 ## Install
 
