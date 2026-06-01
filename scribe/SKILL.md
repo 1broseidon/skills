@@ -1,271 +1,290 @@
 ---
 name: scribe
-description: "Documentation craft skill for project docs that match the code and read well. Use when writing, auditing, syncing, or extracting documentation: READMEs, API references, tutorials, how-to guides, conceptual explanations, architecture notes, changelogs, runbooks, and in-code API docs (docstrings/comments). Enforces source-truth (no invented flags, endpoints, params, defaults, or return types), Diátaxis-aligned structure, audience fit, drift detection against real code, and prose that earns its length. Not for marketing copy, blog posts, legal/policy text, slide decks, or UI microcopy."
-version: 0.1.0
+description: "Documentation craft skill for project docs that match the code and read well. Use when writing, auditing, syncing, or extracting documentation: READMEs, API references, tutorials, how-to guides, explanations, architecture notes, changelogs, runbooks, and in-code API docs. Enforces evidence-level claims (no fabricated flags, endpoints, params, defaults, or return types), Diátaxis-aligned structure, audience fit, drift detection, and prose that earns its length."
+version: 0.3.0
 ---
 
 # Scribe
 
-Scribe makes documentation feel **written by someone who read the code**, not generated next to it.
+Read the code before writing about it. Every claim traces to evidence or is labeled with its evidence level. No exceptions.
 
-Docs have their own physics: they rot the moment code moves, they lie by omission, readers arrive mid-task with one specific question, and the best page is skimmable first and deep on demand. Scribe therefore optimizes for **source-truth, reader-task fit, structural navigability, and prose that earns its length**.
+## Glossary
 
-Core loop:
+One canonical term per concept. Use only these terms in all output.
 
-```text
-Audience -> Doc Type -> Source Evidence -> Outline -> Draft -> Truth-Check -> Readability Pass
-```
-
-If a step does not fit that loop, cut it or move it to a doc-type-specific reference.
-
----
-
-## How to use this skill
-
-| Invocation | What it does |
+| Term | Meaning |
 | --- | --- |
-| *(default)* | Write or update one document for one audience. Follow the **Doc flow**. |
-| `scribe audit <doc>` | Read-only audit. Score a doc for accuracy, structure, prose, and links with evidence. Do not edit. Load [`references/verbs/audit.md`](references/verbs/audit.md). |
-| `scribe sync <doc>` | Reconcile a doc against current code: find drift, fix the claims, preserve the parts still true. Load [`references/verbs/sync.md`](references/verbs/sync.md). |
-| `scribe extract <source>` | Generate doc scaffolding from code, API surface, `--help`, OpenAPI, proto, or an existing README. Diagnosis first; optional draft. Load [`references/verbs/extract.md`](references/verbs/extract.md). |
-
-One run = **one document for one audience** unless the user explicitly names more. In a docs set, prefer the smallest page that answers the request over rewriting the whole site.
-
----
-
-## Non-negotiable disciplines
-
-1. **Evidence before prose.** Read the code before describing it. Every factual claim about behavior — a flag, an endpoint, a parameter, a default, a return type, an exit code, an env var, a config key — traces to a source line or a command you ran. Cite it.
-
-2. **No fabricated facts.** Do not invent flags, routes, function signatures, defaults, error codes, supported versions, performance numbers, or roadmap promises. Use real code, an explicit placeholder, or omit. A confident wrong sentence is worse than a missing one.
-
-3. **Docs are a contract too.** Once readers can see a documented command, signature, or guarantee, they depend on it. When code changes, the doc is drift until reconciled. Sync deprecates and corrects; it does not silently rewrite history.
-
-4. **Match length to the reader's task.** Prose where understanding is the goal; terse tables, lists, and code blocks where lookup is the goal. Every paragraph that does not change what the reader does or understands is cut.
-
-5. **Structure is navigation.** Readers scan before they read. Headings, ordering, progressive disclosure, and links are not decoration — they are how a reader finds the one paragraph they came for.
-
-6. **One doc, one job.** A tutorial is not a reference; a how-to is not an explanation. Mixing the four Diátaxis modes on one page is the most common documentation failure. Pick the mode and hold it.
-
-7. **Pre-emit self-critique.** Score 1–5 on: Accuracy, Audience, Structure, Completeness, Concision, Links, Examples. Anything < 3 triggers a revision pass. Stamp form: `<!-- Scribe · critique: Acc5 Aud4 Str5 Comp4 Con5 Lnk4 Ex5 -->`.
+| **claim** | A factual statement the doc makes about behavior, API surface, defaults, or constraints |
+| **evidence level** | How a claim is grounded: `observed`, `derived`, `stated`, or `absent` |
+| **doc type** | The kind of document: tutorial, how-to, reference, explanation, README, ADR, changelog, runbook, in-code API docs |
+| **mode** | The Diátaxis mode governing structure: learning, task, information, understanding (or a non-Diátaxis mode) |
+| **audience** | The primary reader: new user, integrator, contributor, operator, or decision-maker |
+| **ledger** | The claim-by-claim evidence table built before drafting |
+| **gate** | A binary (yes/no) check before handoff. Any `no` triggers a fix loop |
+| **drift** | A doc claim that no longer matches the code |
+| **outline** | The heading tree and per-section length budget drafted before prose |
 
 ---
 
-## Doc-type fork
+## Disciplines
 
-Resolve doc type before drafting. Each type has a different job, shape, and failure mode. Load [`references/doc-types.md`](references/doc-types.md) for the full map; the four learning-oriented types follow Diátaxis.
+1. **No fabricated facts.** Do not invent flags, routes, signatures, defaults, error codes, versions, performance numbers, or roadmap promises. Use real code, an explicit placeholder, or omit.
 
-| Type | Reader's question | Mode | Skips |
-| --- | --- | --- | --- |
-| **Tutorial** | "Teach me by doing." | Diátaxis: learning | Exhaustive option coverage, edge cases |
-| **How-to guide** | "How do I accomplish X?" | Diátaxis: task | Teaching basics, full API enumeration |
-| **Reference** | "What exactly does this do?" | Diátaxis: information | Narrative, opinion, hand-holding |
-| **Explanation** | "Why is it this way?" | Diátaxis: understanding | Step lists, exhaustive params |
-| **README** | "What is this and should I use it?" | Orientation + routing | Deep API detail (link out instead) |
-| **Architecture / ADR** | "How is it built and why these choices?" | Decision record | Step-by-step usage |
-| **Changelog / migration** | "What changed and what must I do?" | Versioned diff | Conceptual teaching |
-| **Runbook / ops** | "It's on fire — what do I run?" | Operational procedure | Background theory |
-| **In-code API docs** | "What does this symbol do?" (at call site) | Docstring/comment | Tutorials, prose essays |
+2. **Every claim carries an evidence level.** Trace claims to source lines or command output. Label the evidence level. A confident wrong sentence is worse than a missing one.
 
-Ambiguous request: ask once, tersely. Example: *"Is this a how-to (one task) or a reference (full surface)?"* If unanswered, choose the type the reader's phrasing implies; default to how-to for "how do I…", reference for "document the…".
+3. **One doc, one job.** A tutorial is not a reference. A how-to is not an explanation. Pick the mode, hold it. Mixing modes on one page is the most common documentation failure.
 
-**Code-docs vs prose-docs are separate concerns.** In-code API docs (docstrings, doc comments) and standalone prose docs (Markdown pages, docs sites) have different audiences, locations, and lifecycles. Keep them distinct; do not duplicate one into the other. Load [`references/code-vs-docs.md`](references/code-vs-docs.md) when the target is docstrings or when deciding which layer owns a fact.
+4. **Docs are a contract.** Once readers see a documented command, signature, or guarantee, they depend on it. When code changes, the doc is drift until reconciled.
 
-Deferred v2: marketing/landing copy, blog posts, legal/policy text, slide decks, full docs-site IA migrations, translation/localization workflows.
+---
+
+## Decision trace
+
+Every run follows this sequence. This example is the gold template.
+
+```
+Request: "document the search CLI for pipeline integrators"
+→ Inventory: read cmd/, --help, config.go; found 8 commands, SEARCH_ env prefix, exit 0/1/2
+→ Picks: doc-type=how-to · audience=integrator · mode=task
+→ Ledger:
+    --json flag exists     | observed | cmd/root.go L40   | step 2 command flag
+    default timeout 30s    | observed | config.go L18     | inline note in step 3
+    retries on 5xx         | derived  | client.go L72-88  | troubleshooting note
+    supports Postgres 14+  | stated   | README badge       | prerequisite, flagged for confirm
+    --format flag          | absent   | grep found nothing | omitted from doc
+→ Draft: outline, then prose, holding task mode throughout
+→ Truth-check: --help vs doc table (pass), defaults vs code (pass), links resolve (pass)
+→ Gates: claims-sourced=yes, outline-holds-mode=yes, snippets-honest=yes,
+         defaults-match=yes, no-fabricated=yes, links-resolve=yes
+→ Handoff: files changed, claims verified, drift fixed, unverified flagged
+```
 
 ---
 
 ## Doc flow
 
-### 0. Source inventory
+### 0. Inventory
 
-Read the thing you are documenting before writing about it. Prefer evidence over recall.
+Read the thing you are documenting before writing about it. Read `references/source-evidence.md`. Read `references/doc-types.md`.
 
-Load [`references/source-evidence.md`](references/source-evidence.md) for evidence levels and safe discovery commands.
-
-Collect what applies:
+Collect:
 
 - **Subject:** what code, API, command, or system the doc describes
-- **Public surface:** flags, commands, routes, RPCs, exported symbols, signatures, config keys, env vars, exit codes
-- **Real defaults and behavior:** confirmed from source, not assumed from convention
-- **Existing docs:** what's already written, what's stale, what's worth keeping
-- **Doc tooling:** Markdown only, or a generator (Sphinx, Docusaurus, MkDocs, rustdoc, godoc, JSDoc, etc.) — affects link syntax, file layout, and whether snippets can be tested
-- **Convention source:** `scribe.md`, style guide, existing tone, README contract tables
+- **Public surface:** flags, commands, routes, RPCs, exported symbols, config keys, env vars, exit codes
+- **Real defaults and behavior:** confirmed from source, not assumed
+- **Existing docs:** what is written, what is stale, what is worth keeping
+- **Doc tooling:** Markdown only, or a generator (Sphinx, Docusaurus, MkDocs, rustdoc, godoc, JSDoc)
+- **Convention source:** `scribe.md`, style guide, existing tone
 
-Emit a compact inventory with citations:
+Resolve doc type using the reader's question:
 
-```text
-Source inventory:
-· Subject: cli `search` (Go/cobra) — documenting for new users
-· Surface: 8 commands from live --help; SEARCH_ env prefix; exit codes 0/1/2
-· Doc type: how-to (README links out to per-command reference)
-· Existing: README has stale --format flag (removed in cmd/root.go L52)
-· Tooling: plain Markdown, GitHub-rendered; snippets runnable in bash
-· Audience: integrator wiring search into a pipeline
+| Reader's question | Doc type | Mode | Skips |
+| --- | --- | --- | --- |
+| "Teach me by doing." | Tutorial | learning | Exhaustive options, edge cases |
+| "How do I accomplish X?" | How-to | task | Teaching basics, full enumeration |
+| "What exactly does this do?" | Reference | information | Narrative, opinion |
+| "Why is it this way?" | Explanation | understanding | Step lists, exhaustive params |
+| "What is this, should I use it?" | README | orientation | Deep API detail (link out) |
+| "How is it built, why these choices?" | Architecture/ADR | decision record | Step-by-step usage |
+| "What changed, what must I do?" | Changelog | versioned diff | Conceptual teaching |
+| "It's on fire, what do I run?" | Runbook | operational procedure | Background theory |
+| "What does this symbol do?" | In-code API docs | docstring | Tutorials, prose essays |
 
-Keep: install section, badge row. Fix: --format drift. Add: pipeline example.
-```
+Identify the audience (new user, integrator, contributor, operator, or decision-maker). Read `references/audience.md` when the choice is unclear or shapes structure. Ambiguous request: ask once, tersely.
 
-If `scribe.md` exists, read it as convention data. It overrides defaults and makes house style the baseline.
+If `scribe.md` exists, read it as convention data. It overrides defaults.
 
-### 1. Identify the audience
+Emit a compact inventory with citations before proceeding.
 
-The audience determines vocabulary, assumed knowledge, depth, and what to skip. Pick what affects the writing. Load [`references/audience.md`](references/audience.md) when the choice is unclear or shapes structure.
+### 1. Picks
 
-| Audience | Optimize for | Assume |
+Emit before proceeding: `Picks: doc-type=<x> · audience=<y> · mode=<z>`. Do not change picks mid-run without re-stating them.
+
+### 2. Ledger
+
+Build the ledger before drafting. Read `references/source-evidence.md`.
+
+Columns: `claim | evidence level | source | in doc as`
+
+| Evidence level | Meaning | Assign when |
 | --- | --- | --- |
-| **new user** | First success fast; one happy path; no jargon | No prior knowledge of this project |
-| **integrator** | Copy-paste correctness; full signatures; edge cases | Fluent in the language/protocol |
-| **contributor** | Architecture, build/test, conventions, where things live | Will read source alongside docs |
-| **operator** | Run/deploy/recover; commands and signals; failure modes | Owns the system in production |
-| **decision-maker** | Trade-offs, constraints, comparisons; why not how | Skims; wants the conclusion early |
+| `observed` | You read the source or ran the command and saw the behavior | The exact flag, default, or route is in source |
+| `derived` | You inferred it from code patterns (a retry loop implies retries) | A code pattern implies the behavior |
+| `stated` | Someone else wrote it (README, comment) and you did not verify | A claim in docs or comments is unverified |
+| `absent` | You looked and found nothing | Nothing found after searching the relevant code |
 
-A doc can serve one primary audience well or several poorly. Name the primary one. Ask once if unclear:
+`absent` claims: flag, placeholder, or cut. `stated` claims: mark for confirmation.
 
-> *Before I write this: who is the primary reader — new user, integrator, contributor, operator, or decision-maker? Or say "go ahead" and I'll infer from the subject.*
+### 3. Draft
 
-### 2. Outline before prose
+Write to the ledger, the audience, and the mode. Read `references/prose.md`. Read `references/links-and-format.md`.
 
-Draft the heading tree and ordering before writing sentences. The outline is scribe's preview — it makes structure reviewable before words are spent. Load [`references/structure.md`](references/structure.md).
+**Outline first.** Draft the heading tree and length budget per section before writing sentences. Read `references/structure.md`. Match length to the reader's task: prose where understanding is the goal, terse tables and code blocks where lookup is the goal. Headings, ordering, and progressive disclosure are navigation, not decoration. Hold the chosen mode throughout. If the outline starts teaching inside a reference or enumerating options inside a tutorial, fix the outline.
 
-State the outline and the intended length budget per section:
+**Explore for subjective prose only.** Audience, doc type, and mode already fix structure. Exploration is for the axes they do not fix: the opening hook, the central analogy, the worked-example domain. Generate 2-3 candidates on one such axis, select with a one-line rationale, then write. If the picks already determine the choice, skip it. Do not re-litigate an upstream pick.
 
-```text
-Outline (how-to: "Add search to a pipeline"):
-1. What you'll build       (2 sentences)
-2. Prerequisites           (bulleted, versioned)
-3. Steps 1–4               (numbered, one command each + expected output)
-4. Verify it worked        (one command, one assertion)
-5. Troubleshooting         (table: symptom → cause → fix)
-6. Next steps / see also    (3 links)
+```
+Candidates (worked-example domain for an explanation of rate limiting):
+  (1) coffee shop with a fixed number of cups
+  (2) highway on-ramp metering light
+  (3) nightclub bouncer enforcing capacity
+Selected: 2. Closest to the real mechanism: tokens refill over time.
 ```
 
-Hold the chosen Diátaxis mode. If the outline starts teaching inside a reference, or enumerating options inside a tutorial, fix the outline, not the prose.
+Skip exploration for reference tables, flag lists, exit-code tables, changelogs, and any section with a deterministic correct shape.
 
-### 3. Build the claim ledger
+**Then write:**
 
-Before drafting, list the factual claims the doc will make and their evidence. This is scribe's anti-slop spine. Load [`references/source-evidence.md`](references/source-evidence.md).
+- **Examples are real.** Every snippet copy-pastes and works, or is a clearly marked placeholder.
+- **Show expected output** when the reader needs to distinguish success from failure.
+- **Front-load.** First sentence of every section answers the section's question. One canonical place per fact; link, don't duplicate.
+- **One mode per page.** Need another mode? Link to a separate page.
 
-Ledger columns:
+State the file plan before editing.
 
-```text
-claim | evidence level | source | in doc as
+### 4. Truth-check
+
+Verify the doc against reality. Read `references/verification.md`.
+
+Record: `check | command/evidence | result | notes`
+
+Checks: documented flags exist (`--help` vs doc table), defaults match code, snippets run (when feasible), links resolve, signatures match. Snippet execution is optional and repo-dependent. Never claim a snippet works if you did not run it.
+
+### 5. Gates
+
+Apply before handoff. Any `no` triggers a fix. Do not hand off with a failing gate.
+
+| Gate | Check |
+| --- | --- |
+| `claims-sourced` | Every claim has an evidence level in the ledger |
+| `outline-holds-mode` | The doc stays in its declared mode throughout |
+| `snippets-honest` | No snippet is presented as working unless run or compiled |
+| `defaults-match` | Every default in the doc matches source code |
+| `no-fabricated` | No invented flags, routes, signatures, defaults, or error codes |
+| `links-resolve` | Every internal link and anchor resolves |
+
+**Fix loop:** gate fails → fix the cause → re-run that gate → confirm `yes`. Repeat until all gates pass.
+
+### 6. Handoff
+
+Include in final response: what changed (files, sections), claims corrected or verified, verification commands and results, unverified claims flagged with reason, gate results (all yes). Do not bury accuracy corrections under prose. If you fixed drift, say so plainly.
+
+---
+
+## BAD/GOOD pairs
+
+Three highest-frequency failures. Study before drafting. Read `references/anti-patterns.md` for the full list.
+
+**Fabricated facts:**
+
+BAD:
+```markdown
+Use `--retry-count` to set the number of retries (default: 3).
+```
+(No `--retry-count` flag exists in the code.)
+
+GOOD:
+```markdown
+The client retries on transient errors. Retry behavior is in `client.go` L72-88.
+No user-facing flag is exposed.
 ```
 
-Examples:
+**Mode-mixing:**
 
-- `--json flag exists | observed | cmd/root.go L40 | reference table row`
-- `default timeout 30s | observed | config.go L18 | "defaults to 30 seconds"`
-- `retries on 5xx | derived | client.go retry loop | "retries transient errors"`
-- `supports Postgres 14+ | stated | README badge, unverified | flag for confirmation`
-
-Any claim that is not at least **derived** from code gets flagged, placeholdered, or cut. If the doc makes no behavioral claims (pure explanation/opinion), say so.
-
-### 4. Draft
-
-Write to the outline, the audience, and the ledger. Load [`references/prose.md`](references/prose.md) for voice and concision rules, and [`references/links-and-format.md`](references/links-and-format.md) for code fences, callouts, tables, and cross-references.
-
-Rules that always apply:
-
-- **Examples are real.** Every command, snippet, and value copy-pastes and works, or is a clearly marked placeholder (`<your-api-key>`, never `sk_live_abc123`).
-- **Show expected output** for commands when the reader needs to know success from failure.
-- **Front-load.** The first sentence of every section answers the section's question. Detail follows.
-- **Link, don't duplicate.** Reference one canonical place for each fact; cross-link the rest.
-- **One mode per page.** If you need another mode, link to a separate page.
-
-State the file plan before editing:
-
-```text
-Modify: README.md
-Create: docs/how-to/pipeline.md
-No deletes.
+BAD:
+```markdown
+## How to configure auth
+Authentication uses OAuth 2.0 with PKCE, which was designed to protect public clients
+from authorization code interception attacks. To configure it:
+1. Run `app auth init`
 ```
 
-### 5. Truth-check
+GOOD:
+```markdown
+## How to configure auth
+1. Run `app auth init`
+2. Paste the client ID from your provider dashboard
+3. Run `app auth verify` to confirm the token works
 
-Verify the doc against reality. Load [`references/verification.md`](references/verification.md), then run the checks the doc type warrants.
-
-Minimum matrix:
-
-```text
-check | command/evidence | result | notes
+For background on OAuth 2.0 + PKCE, see [Authentication concepts](./concepts/auth.md).
 ```
 
-Typical checks:
+**Prose where a table fits:**
 
-- Every documented flag/command exists: `tool --help` vs doc table
-- Defaults in prose match code: grep the default, compare
-- Code snippets run (when language/repo allows): execute or compile them — see [`references/verification.md`](references/verification.md) for when this is feasible vs skipped
-- Links resolve: no dead internal anchors or paths
-- API reference matches signatures: doc vs exported symbols
-- Version/compat claims trace to a manifest or are flagged
+BAD:
+```markdown
+The `search` command supports several output formats. Use `--format json` for JSON,
+`--format csv` for CSV, or `--format table` for a human-readable table. Default is `table`.
+```
 
-Snippet execution is **optional and repo-dependent**: run it when the toolchain is present and snippets are self-contained; otherwise state it was not run and why. Never claim a snippet works if you did not run or compile it.
+GOOD:
+```markdown
+| Flag | Output | Default |
+| --- | --- | --- |
+| `--format json` | JSON | |
+| `--format csv` | CSV | |
+| `--format table` | Human-readable table | ✓ |
+```
 
-### 6. Readability pass + slop gates
+---
 
-Re-read as the target audience. Load [`references/slop-test.md`](references/slop-test.md) at the end only — it is a post-emit check, not a pre-emit reference. Use [`references/anti-patterns.md`](references/anti-patterns.md) before drafting to avoid the common failures up front.
+## Invocations
 
-Fix P0/P1 before handoff; list unresolved P2 with reason.
+| Invocation | What it does |
+| --- | --- |
+| *(default)* | Write or update one document for one audience. Follow the doc flow. |
+| `scribe audit <doc>` | Read-only audit. Do not edit. Read `references/verbs/audit.md`. |
+| `scribe sync <doc>` | Reconcile doc against current code: find drift, fix claims, preserve truth. Read `references/verbs/sync.md`. |
+| `scribe extract <source>` | Generate doc scaffolding from code, API surface, `--help`, OpenAPI, or proto. Read `references/verbs/extract.md`. |
 
-### 7. Handoff
+One run = one document for one audience unless the user explicitly names more.
 
-Final response includes:
+### Audit output format
 
-- What changed (files, sections)
-- Claims corrected or newly verified (the drift ledger if this was a sync)
-- Verification commands run and results
-- Any unverified claims left flagged, and why
-- Self-critique stamp
+Emit findings as a severity-labeled punch list:
 
-Do not bury accuracy corrections under prose chatter. If you fixed a lie, say so plainly.
+```
+severity | location       | what is wrong            | evidence                    | fix
+P0       | README L14     | --format flag missing    | grep cmd/ found nothing     | Remove row or add flag
+P1       | API.md §Auth   | token endpoint stale     | routes.go L88: /v2/token    | Update URL
+P2       | README L40     | "blazing fast" no bench  | no evidence found           | Cut or add benchmark
+```
+
+P0 = factually wrong (drift, fabrication). P1 = structurally broken (wrong mode, missing critical section). P2 = quality (prose, formatting, style).
 
 ---
 
 ## Convention artifacts
 
-Scribe emits or maintains convention artifacts when scope warrants:
-
-| Scope | Artifact |
-| --- | --- |
-| Docs set with house style | `scribe.md` (voice, structure, link conventions) |
-| Drift reconciliation | drift ledger in the handoff or `.scribe/drift.md` |
-| Recurring doc structure | per-type templates under `docs/` |
-
-`scribe.md` is opt-in via *lock the style*, *give me a scribe.md*, or *make the docs conventions portable*. Load [`references/scribe-md.md`](references/scribe-md.md). Once present, house style wins over scribe defaults.
+`scribe.md` (voice, structure, link conventions): opt-in, read `references/scribe-md.md`. Once present, house style wins over defaults. Drift ledger emitted in handoff or persisted at `.scribe/drift.md`. Per-type templates live under `docs/`.
 
 ---
 
-## Reference loading rules
+## Reference loading
 
-Keep `SKILL.md` lean and load only what matches the doc.
+### Always load
 
-Always consider:
+Read these at the start of every run:
 
-- [`references/source-evidence.md`](references/source-evidence.md)
-- [`references/doc-types.md`](references/doc-types.md)
-- [`references/verification.md`](references/verification.md)
+- `references/source-evidence.md`
+- `references/doc-types.md`
+- `references/verification.md`
 
-Type/concern-specific:
+### Load when applies
 
-- Audience choice shapes structure: [`references/audience.md`](references/audience.md)
-- Outlining and navigation: [`references/structure.md`](references/structure.md)
-- Voice, concision, prose-vs-terse: [`references/prose.md`](references/prose.md)
-- Code fences, callouts, tables, cross-refs: [`references/links-and-format.md`](references/links-and-format.md)
-- Docstrings vs prose docs, fact ownership: [`references/code-vs-docs.md`](references/code-vs-docs.md)
-- Drift tracking on sync: [`references/drift-ledger.md`](references/drift-ledger.md)
-- Anti-patterns: [`references/anti-patterns.md`](references/anti-patterns.md) before drafting; [`references/slop-test.md`](references/slop-test.md) after.
+- `references/audience.md`, `references/structure.md`, `references/prose.md`
+- `references/links-and-format.md`, `references/code-vs-docs.md`
+- `references/drift-ledger.md` (sync), `references/scribe-md.md` (conventions)
+- `references/anti-patterns.md` (before drafting), `references/slop-test.md` (after drafting)
+- `references/verbs/audit.md`, `references/verbs/sync.md`, `references/verbs/extract.md`
 
-Human-only examples live in [`examples/`](examples/). Do not auto-load them during normal runs.
+### Never load at runtime
+
+- `references/philosophy.md` (human-only design rationale)
+- `examples/` (human-only, not auto-loaded)
 
 ---
 
-## v1 limits
+## Scope
 
-| In scope | Deferred |
-| --- | --- |
-| README, API reference, tutorial, how-to, explanation, architecture/ADR, changelog, runbook, in-code API docs | Marketing/landing copy, blog posts, legal text, slide decks |
-| Source-evidence claims and drift detection | Auto-generating full docs sites from scratch |
-| Single-doc, single-audience work | Cross-site IA migrations, localization workflows |
-| Optional snippet execution when toolchain allows | Guaranteed execution across every language/runtime |
-| Markdown and common generators (Sphinx/Docusaurus/MkDocs/rustdoc/godoc/JSDoc) | Bespoke or proprietary doc pipelines |
+In scope: all nine doc types, evidence-level claims, drift detection, single-doc single-audience work, optional snippet execution, Markdown and common generators. Deferred: marketing copy, blog posts, legal text, slide decks, full-site generation, cross-site IA migrations, localization, bespoke pipelines.
