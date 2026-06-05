@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Block a commit when the root README versions drift from any SKILL.md.
+# Install once:  ln -sf ../../scripts/pre-commit .git/hooks/pre-commit
+exec "$(git rev-parse --show-toplevel)/scripts/check-versions.sh"
