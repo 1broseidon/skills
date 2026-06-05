@@ -10,6 +10,7 @@ Each subdirectory is a self-contained skill with its own `SKILL.md` and referenc
 | --- | --- | --- |
 | [anvil](anvil/) | `0.3.0` | Backend craft skill for language-agnostic CLIs, REST APIs, gRPC services, package APIs, and backend repo structure. Build, audit, reshape, or study backend surfaces with contract honesty and evidence-backed verification. |
 | [scribe](scribe/) | `0.3.1` | Documentation craft skill for project docs that match the code and read well. Write, audit, sync, or extract READMEs, API references, tutorials, how-tos, explanations, and in-code docs — source-true and drift-aware. |
+| [prompt-mechanics](prompt-mechanics/) | `0.1.0` | Prompt-engineering skill for system prompts, agent instructions, and other skills. Engineer prompts against how LLMs actually process text: name the mechanism behind every change and verify against it, not by feel. |
 
 ## Install
 
@@ -28,7 +29,7 @@ npx skills add 1broseidon/skills --skill scribe
 Install several:
 
 ```bash
-npx skills add 1broseidon/skills --skill anvil scribe
+npx skills add 1broseidon/skills --skill anvil scribe prompt-mechanics
 ```
 
 Install everything:
@@ -43,10 +44,13 @@ The `skills` CLI is documented at [skills.sh/docs/cli](https://skills.sh/docs/cl
 
 ```text
 .
-├── anvil/        # backend craft skill
+├── anvil/             # backend craft skill
 │   ├── SKILL.md
 │   └── references/
-├── scribe/       # documentation craft skill
+├── scribe/            # documentation craft skill
+│   ├── SKILL.md
+│   └── references/
+├── prompt-mechanics/  # prompt-engineering skill
 │   ├── SKILL.md
 │   └── references/
 └── README.md
