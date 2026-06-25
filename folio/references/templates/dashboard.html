@@ -1,0 +1,102 @@
+<!-- Folio · template: dashboard · kind: dashboard · bundle: single-file · host: local -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}} · Folio dashboard template</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2345577d'/%3E%3Cpath d='M7 21l5-8 4 5 3-4 6 7' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+:root {
+  --font-display: ui-serif, Georgia, "Iowan Old Style", serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-paper:    oklch(98% 0.006 90);
+  --color-paper-2:  oklch(95% 0.008 90);
+  --color-rule:     oklch(88% 0.010 90);
+  --color-ink:      oklch(22% 0.020 80);
+  --color-ink-2:    oklch(45% 0.012 80);
+  --color-muted:    oklch(55% 0.010 80);
+  --color-accent:   oklch(55% 0.180 245);
+  --color-accent-ink: oklch(99% 0.004 90);
+  --color-focus:    oklch(55% 0.180 245);
+
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px oklch(22% 0.02 80 / 0.06);
+  --page-max: 860px;
+}
+
+[data-theme="dark"] {
+  --color-paper:    oklch(16% 0.008 80);
+  --color-paper-2:  oklch(20% 0.010 80);
+  --color-rule:     oklch(30% 0.012 80);
+  --color-ink:      oklch(96% 0.005 90);
+  --color-ink-2:    oklch(78% 0.010 80);
+  --color-muted:    oklch(68% 0.010 80);
+  --color-accent:   oklch(72% 0.150 245);
+  --color-accent-ink: oklch(16% 0.02 80);
+  --color-focus:    oklch(74% 0.150 245);
+}
+:root { --measure: 65ch; --border-thin: 1px; --type--1: clamp(0.875rem, 0.82rem + 0.2vw, 0.95rem); --type-0: clamp(1rem, 0.94rem + 0.3vw, 1.125rem); --type-1: clamp(1.35rem, 1.12rem + 1vw, 1.8rem); --type-2: clamp(2rem, 1.45rem + 2.8vw, 3.2rem); --type-3: clamp(2.5rem, 1.7rem + 4vw, 4.8rem); --bar-a: 72%; --bar-b: 48%; --bar-c: 31%; --leading-body: 1.55; --leading-tight: 1.12; --weight-bold: 700; }
+* { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+body { margin: 0; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--type-0); line-height: var(--leading-body); }
+main { width: min(var(--page-max), calc(100% - var(--space-6))); margin: var(--space-7) auto; }
+h1,h2,h3 { font-style: normal; }
+h1, h2, h3 { font-family: var(--font-display); line-height: var(--leading-tight); }
+h1 { margin: 0 0 var(--space-3); font-size: var(--type-2); }
+h2 { margin: var(--space-7) 0 var(--space-4); font-size: var(--type-1); }
+p, li { max-width: var(--measure); }
+.lede { color: var(--color-ink-2); }
+.kpis { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 0.8fr); gap: var(--space-4); margin-top: var(--space-6); }
+.kpi { border: var(--border-thin) solid var(--color-rule); border-radius: var(--radius-lg); padding: var(--space-5); background: var(--color-paper-2); }
+.kpi strong { display: block; font-family: var(--font-display); font-size: var(--type-3); line-height: var(--leading-tight); }
+.kpi span { color: var(--color-muted); font-size: var(--type--1); }
+.chart { display: grid; gap: var(--space-4); border-top: var(--border-thin) solid var(--color-rule); padding-top: var(--space-5); }
+.bar { display: grid; grid-template-columns: minmax(0, 10rem) minmax(0, 1fr); gap: var(--space-3); align-items: center; }
+.track { background: var(--color-paper-2); border-radius: var(--radius-sm); border: var(--border-thin) solid var(--color-rule); }
+.fill { display: block; height: var(--space-4); border-radius: var(--radius-sm); background: var(--color-accent); }
+.bar:nth-child(1) .fill { width: var(--bar-a); }
+.bar:nth-child(2) .fill { width: var(--bar-b); }
+.bar:nth-child(3) .fill { width: var(--bar-c); }
+.theme-toggle { position: fixed; top: var(--space-4); right: var(--space-4); border: var(--border-thin) solid var(--color-rule); border-radius: var(--radius-md); padding: var(--space-2) var(--space-3); background: var(--color-paper-2); color: var(--color-ink); font: inherit; }
+.theme-toggle:focus-visible { outline: var(--border-thin) solid var(--color-focus); outline-offset: var(--space-1); }
+@media (max-width: 700px) { .kpis, .bar { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<button class="theme-toggle" type="button" aria-pressed="false">Theme</button>
+<main>
+  <!-- Replace: title -->
+  <h1>{{dashboard title}}</h1>
+  <p class="lede"><!-- Replace: context -->A compact view of the measures that matter for {{audience}}.</p>
+  <section class="kpis" aria-label="Key performance indicators">
+    <div class="kpi"><strong>{{72}}</strong><span>{{primary KPI label}}</span></div>
+    <div class="kpi"><strong>{{18%}}</strong><span>{{secondary KPI label}}</span></div>
+    <div class="kpi"><strong>{{4.8}}</strong><span>{{tertiary KPI label}}</span></div>
+  </section>
+  <section>
+    <h2><!-- Replace: chart title -->Progress by segment</h2>
+    <div class="chart" aria-label="Horizontal bar chart">
+      <div class="bar"><span>{{segment A}}</span><div class="track"><span class="fill"></span></div></div>
+      <div class="bar"><span>{{segment B}}</span><div class="track"><span class="fill"></span></div></div>
+      <div class="bar"><span>{{segment C}}</span><div class="track"><span class="fill"></span></div></div>
+    </div>
+  </section>
+</main>
+<script>
+(() => {
+  const root = document.documentElement;
+  const button = document.querySelector('.theme-toggle');
+  const read = () => { try { return localStorage.getItem('folio-theme'); } catch { return null; } };
+  const write = value => { try { localStorage.setItem('folio-theme', value); } catch {} };
+  const apply = value => { root.dataset.theme = value; button.setAttribute('aria-pressed', String(value === 'dark')); };
+  apply(read() || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  button.addEventListener('click', () => { const next = root.dataset.theme === 'dark' ? 'light' : 'dark'; apply(next); write(next); });
+})();
+</script>
+</body>
+</html>

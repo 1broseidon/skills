@@ -1,0 +1,105 @@
+<!-- Folio · template: landing · kind: landing · bundle: single-file · host: local -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}} · Folio landing template</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2345577d'/%3E%3Cpath d='M7 21l5-8 4 5 3-4 6 7' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+:root {
+  --font-display: ui-serif, Georgia, "Iowan Old Style", serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-paper:    oklch(98% 0.006 90);
+  --color-paper-2:  oklch(95% 0.008 90);
+  --color-rule:     oklch(88% 0.010 90);
+  --color-ink:      oklch(22% 0.020 80);
+  --color-ink-2:    oklch(45% 0.012 80);
+  --color-muted:    oklch(55% 0.010 80);
+  --color-accent:   oklch(55% 0.180 245);
+  --color-accent-ink: oklch(99% 0.004 90);
+  --color-focus:    oklch(55% 0.180 245);
+
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px oklch(22% 0.02 80 / 0.06);
+  --page-max: 860px;
+}
+
+[data-theme="dark"] {
+  --color-paper:    oklch(16% 0.008 80);
+  --color-paper-2:  oklch(20% 0.010 80);
+  --color-rule:     oklch(30% 0.012 80);
+  --color-ink:      oklch(96% 0.005 90);
+  --color-ink-2:    oklch(78% 0.010 80);
+  --color-muted:    oklch(68% 0.010 80);
+  --color-accent:   oklch(72% 0.150 245);
+  --color-accent-ink: oklch(16% 0.02 80);
+  --color-focus:    oklch(74% 0.150 245);
+}
+:root { --measure: 65ch; --border-thin: 1px; --type--1: clamp(0.875rem, 0.82rem + 0.2vw, 0.95rem); --type-0: clamp(1rem, 0.94rem + 0.3vw, 1.125rem); --type-1: clamp(1.35rem, 1.12rem + 1vw, 1.8rem); --type-2: clamp(2.1rem, 1.45rem + 3.2vw, 3.8rem); --type-3: clamp(2.4rem, 1.7rem + 4vw, 4.8rem); --leading-body: 1.55; --leading-tight: 1.1; --weight-bold: 700; }
+* { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+body { margin: 0; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--type-0); line-height: var(--leading-body); }
+main, footer { width: min(var(--page-max), calc(100% - var(--space-6))); margin-inline: auto; }
+h1,h2,h3 { font-style: normal; }
+h1, h2, h3 { font-family: var(--font-display); line-height: var(--leading-tight); }
+h1 { margin: 0 0 var(--space-4); font-size: var(--type-3); max-width: var(--measure); }
+h2 { margin: 0 0 var(--space-4); font-size: var(--type-1); }
+p, li { max-width: var(--measure); }
+.hero { padding: var(--space-7) 0 var(--space-6); }
+.subhead { color: var(--color-ink-2); font-size: var(--type-1); }
+.cta { display: inline-block; margin-top: var(--space-4); padding: var(--space-3) var(--space-5); border-radius: var(--radius-md); background: var(--color-accent); color: var(--color-accent-ink); text-decoration: none; font-weight: var(--weight-bold); }
+.stats { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 0.7fr); gap: var(--space-5); margin: var(--space-6) 0; border-top: var(--border-thin) solid var(--color-rule); padding-top: var(--space-5); }
+.stat strong { display: block; font-family: var(--font-display); font-size: var(--type-2); line-height: var(--leading-tight); }
+.stat span { color: var(--color-muted); }
+.features { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: var(--space-6); padding: var(--space-6) 0; border-top: var(--border-thin) solid var(--color-rule); }
+ul { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-3); }
+li { padding-bottom: var(--space-3); border-bottom: var(--border-thin) solid var(--color-rule); }
+footer { padding: var(--space-5) 0; color: var(--color-muted); border-top: var(--border-thin) solid var(--color-rule); }
+.theme-toggle { position: fixed; top: var(--space-4); right: var(--space-4); border: var(--border-thin) solid var(--color-rule); border-radius: var(--radius-md); padding: var(--space-2) var(--space-3); background: var(--color-paper-2); color: var(--color-ink); font: inherit; }
+.theme-toggle:focus-visible, .cta:focus-visible { outline: var(--border-thin) solid var(--color-focus); outline-offset: var(--space-1); }
+@media (max-width: 700px) { .stats, .features { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<button class="theme-toggle" type="button" aria-pressed="false">Theme</button>
+<main>
+  <section class="hero">
+    <!-- Replace: title -->
+    <h1>{{landing page headline}}</h1>
+    <p class="subhead"><!-- Replace: subheading -->One sentence that states who this is for and what changes for them.</p>
+    <a class="cta" href="#features">{{primary action}}</a>
+  </section>
+  <section class="stats" aria-label="Key stats">
+    <div class="stat"><strong>{{12k}}</strong><span>{{first stat label}}</span></div>
+    <div class="stat"><strong>{{84%}}</strong><span>{{second stat label}}</span></div>
+    <div class="stat"><strong>{{9}}</strong><span>{{third stat label}}</span></div>
+  </section>
+  <section class="features" id="features">
+    <h2>{{features heading}}</h2>
+    <ul>
+      <li><strong>{{kind or feature}}</strong><br>{{short replacement note}}</li>
+      <li><strong>{{kind or feature}}</strong><br>{{short replacement note}}</li>
+      <li><strong>{{kind or feature}}</strong><br>{{short replacement note}}</li>
+      <li><strong>{{kind or feature}}</strong><br>{{short replacement note}}</li>
+    </ul>
+  </section>
+</main>
+<footer>{{footer line}} · Replace with ownership, date, or contact.</footer>
+<script>
+(() => {
+  const root = document.documentElement;
+  const button = document.querySelector('.theme-toggle');
+  const read = () => { try { return localStorage.getItem('folio-theme'); } catch { return null; } };
+  const write = value => { try { localStorage.setItem('folio-theme', value); } catch {} };
+  const apply = value => { root.dataset.theme = value; button.setAttribute('aria-pressed', String(value === 'dark')); };
+  apply(read() || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  button.addEventListener('click', () => { const next = root.dataset.theme === 'dark' ? 'light' : 'dark'; apply(next); write(next); });
+})();
+</script>
+</body>
+</html>

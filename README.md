@@ -11,6 +11,7 @@ Each subdirectory is a self-contained skill with its own `SKILL.md` and referenc
 | [anvil](anvil/) | `0.4.0` | Backend craft skill for language-agnostic CLIs, REST APIs, gRPC services, package APIs, and backend repo structure. Build, audit, reshape, or study backend surfaces with contract honesty and evidence-backed verification. |
 | [scribe](scribe/) | `0.3.1` | Documentation craft skill for project docs that match the code and read well. Write, audit, sync, or extract READMEs, API references, tutorials, how-tos, explanations, and in-code docs — source-true and drift-aware. |
 | [prompt-mechanics](prompt-mechanics/) | `0.1.0` | Prompt-engineering skill for system prompts, agent instructions, and other skills. Engineer prompts against how LLMs actually process text: name the mechanism behind every change and verify against it, not by feel. |
+| [folio](folio/) | `0.2.4` | Static artifact craft skill for self-contained HTML/CSS/JS documents — docs, sheets, dashboards, explainers, slides, tools, and landing pages. Durable, shareable web deliverables, local-first; optional publish to Surge, GitHub Pages, or Cloudflare. Static-only, manifest-honest, visually grounded. |
 
 ## Install
 
@@ -51,6 +52,9 @@ The `skills` CLI is documented at [skills.sh/docs/cli](https://skills.sh/docs/cl
 │   ├── SKILL.md
 │   └── references/
 ├── prompt-mechanics/  # prompt-engineering skill
+│   ├── SKILL.md
+│   └── references/
+├── folio/             # static HTML artifact craft skill
 │   ├── SKILL.md
 │   └── references/
 ├── scripts/           # repo maintenance scripts

@@ -1,0 +1,107 @@
+<!-- Folio · template: sheet · kind: sheet · bundle: single-file · host: local -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}} · Folio sheet template</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2345577d'/%3E%3Cpath d='M7 21l5-8 4 5 3-4 6 7' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+:root {
+  --font-display: ui-serif, Georgia, "Iowan Old Style", serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-paper:    oklch(98% 0.006 90);
+  --color-paper-2:  oklch(95% 0.008 90);
+  --color-rule:     oklch(88% 0.010 90);
+  --color-ink:      oklch(22% 0.020 80);
+  --color-ink-2:    oklch(45% 0.012 80);
+  --color-muted:    oklch(55% 0.010 80);
+  --color-accent:   oklch(55% 0.180 245);
+  --color-accent-ink: oklch(99% 0.004 90);
+  --color-focus:    oklch(55% 0.180 245);
+
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px oklch(22% 0.02 80 / 0.06);
+  --page-max: 860px;
+}
+
+[data-theme="dark"] {
+  --color-paper:    oklch(16% 0.008 80);
+  --color-paper-2:  oklch(20% 0.010 80);
+  --color-rule:     oklch(30% 0.012 80);
+  --color-ink:      oklch(96% 0.005 90);
+  --color-ink-2:    oklch(78% 0.010 80);
+  --color-muted:    oklch(68% 0.010 80);
+  --color-accent:   oklch(72% 0.150 245);
+  --color-accent-ink: oklch(16% 0.02 80);
+  --color-focus:    oklch(74% 0.150 245);
+}
+:root { --measure: 65ch; --border-thin: 1px; --type--1: clamp(0.875rem, 0.82rem + 0.2vw, 0.95rem); --type-0: clamp(1rem, 0.94rem + 0.3vw, 1.125rem); --type-1: clamp(1.35rem, 1.12rem + 1vw, 1.8rem); --type-2: clamp(2rem, 1.45rem + 2.8vw, 3.1rem); --leading-body: 1.55; --leading-tight: 1.15; --weight-bold: 700; }
+* { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+body { margin: 0; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--type-0); line-height: var(--leading-body); }
+main { width: min(var(--page-max), calc(100% - var(--space-6))); margin: var(--space-7) auto; }
+h1,h2,h3 { font-style: normal; }
+h1, h2, h3 { font-family: var(--font-display); line-height: var(--leading-tight); }
+h1 { margin: 0 0 var(--space-3); font-size: var(--type-2); }
+p, li { max-width: var(--measure); }
+.lede { color: var(--color-ink-2); margin-bottom: var(--space-5); }
+.table-wrap { overflow-x: auto; border: var(--border-thin) solid var(--color-rule); border-radius: var(--radius-lg); background: var(--color-paper-2); }
+table { width: 100%; min-width: calc(var(--page-max) - var(--space-7)); border-collapse: collapse; }
+th, td { padding: var(--space-3) var(--space-4); border-bottom: var(--border-thin) solid var(--color-rule); text-align: left; white-space: nowrap; }
+th { color: var(--color-muted); font-size: var(--type--1); cursor: pointer; }
+th[aria-sort="ascending"], th[aria-sort="descending"] { color: var(--color-accent); }
+tfoot td { font-weight: var(--weight-bold); background: var(--color-paper); }
+.theme-toggle { position: fixed; top: var(--space-4); right: var(--space-4); border: var(--border-thin) solid var(--color-rule); border-radius: var(--radius-md); padding: var(--space-2) var(--space-3); background: var(--color-paper-2); color: var(--color-ink); font: inherit; }
+.theme-toggle:focus-visible, th:focus-visible { outline: var(--border-thin) solid var(--color-focus); outline-offset: var(--space-1); }
+</style>
+</head>
+<body>
+<button class="theme-toggle" type="button" aria-pressed="false">Theme</button>
+<main>
+  <!-- Replace: title -->
+  <h1>{{dataset title}}</h1>
+  <p class="lede"><!-- Replace: lede -->A sortable sheet scaffold for {{dataset purpose}}.</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th scope="col" tabindex="0" data-sort="name">Name</th><th scope="col" tabindex="0" data-sort="value">Value</th><th scope="col" tabindex="0" data-sort="status">Status</th><th scope="col" tabindex="0" data-sort="date">Date</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>{{name}}</td><td>42</td><td>{{status}}</td><td>2025-01-15</td></tr>
+        <tr><td>{{name}}</td><td>18</td><td>{{status}}</td><td>2025-02-03</td></tr>
+        <tr><td>{{name}}</td><td>27</td><td>{{status}}</td><td>2025-03-21</td></tr>
+      </tbody>
+      <tfoot><tr><td>Summary</td><td colspan="3">{{count}} rows · {{summary note}}</td></tr></tfoot>
+    </table>
+  </div>
+</main>
+<script>
+(() => {
+  const root = document.documentElement;
+  const button = document.querySelector('.theme-toggle');
+  const read = () => { try { return localStorage.getItem('folio-theme'); } catch { return null; } };
+  const write = value => { try { localStorage.setItem('folio-theme', value); } catch {} };
+  const apply = value => { root.dataset.theme = value; button.setAttribute('aria-pressed', String(value === 'dark')); };
+  apply(read() || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  button.addEventListener('click', () => { const next = root.dataset.theme === 'dark' ? 'light' : 'dark'; apply(next); write(next); });
+  const tbody = document.querySelector('tbody');
+  let active = { key: '', dir: 1 };
+  const valueOf = (row, index) => row.children[index].textContent.trim();
+  const normalize = value => Number.isFinite(Number(value)) ? Number(value) : Date.parse(value) || value.toLowerCase();
+  const sortBy = header => {
+    const index = [...header.parentElement.children].indexOf(header);
+    active = { key: header.dataset.sort, dir: active.key === header.dataset.sort ? active.dir * -1 : 1 };
+    document.querySelectorAll('th[data-sort]').forEach(th => th.setAttribute('aria-sort', 'none'));
+    header.setAttribute('aria-sort', active.dir === 1 ? 'ascending' : 'descending');
+    [...tbody.rows].sort((a, b) => normalize(valueOf(a, index)) > normalize(valueOf(b, index)) ? active.dir : -active.dir).forEach(row => tbody.append(row));
+  };
+  document.querySelectorAll('th[data-sort]').forEach(th => { th.setAttribute('aria-sort', 'none'); th.addEventListener('click', () => sortBy(th)); th.addEventListener('keydown', event => { if (event.key === 'Enter') sortBy(th); }); });
+})();
+</script>
+</body>
+</html>

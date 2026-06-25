@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Folio samples</title>
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2345577d'/%3E%3Cpath d='M7 21l5-8 4 5 3-4 6 7' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+/* Folio · slug: folio-site-index · kind: landing · bundle: single-file · host: surge
+   deps: none · data: .folio/site.json (embedded inline) */
+
+:root {
+  --font-display: ui-serif, Georgia, "Iowan Old Style", serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-paper:    oklch(98% 0.006 90);
+  --color-paper-2:  oklch(95% 0.008 90);
+  --color-rule:     oklch(88% 0.010 90);
+  --color-ink:      oklch(22% 0.020 80);
+  --color-ink-2:    oklch(45% 0.012 80);
+  --color-muted:    oklch(55% 0.010 80);
+  --color-accent:   oklch(55% 0.180 245);
+  --color-accent-ink: oklch(99% 0.004 90);
+  --color-focus:    oklch(55% 0.180 245);
+
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 14px;
+  --page-max: 960px;
+}
+
+[data-theme="dark"] {
+  --color-paper:    oklch(16% 0.008 80);
+  --color-paper-2:  oklch(20% 0.010 80);
+  --color-rule:     oklch(30% 0.012 80);
+  --color-ink:      oklch(96% 0.005 90);
+  --color-ink-2:    oklch(78% 0.010 80);
+  --color-muted:    oklch(68% 0.010 80);
+  --color-accent:   oklch(72% 0.150 245);
+  --color-accent-ink: oklch(16% 0.02 80);
+  --color-focus:    oklch(74% 0.150 245);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+body {
+  margin: 0; background: var(--color-paper); color: var(--color-ink);
+  font-family: var(--font-body); font-size: 17px; line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; font-style: normal; margin: 0 0 var(--space-4); overflow-wrap: break-word; }
+h1 { font-size: clamp(1.8rem, 5vw, 2.5rem); letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.1rem, 2.5vw, 1.35rem); margin-top: var(--space-7); margin-bottom: var(--space-3); }
+a { color: var(--color-accent); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 2px; }
+code { font-family: var(--font-mono); font-size: 0.88em; }
+
+.wrap { max-width: var(--page-max); margin: 0 auto; padding: var(--space-6) var(--space-5) var(--space-8); }
+
+header.site-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4);
+  flex-wrap: wrap; padding-bottom: var(--space-5); border-bottom: 1px solid var(--color-rule);
+}
+header.site-head .lede { color: var(--color-ink-2); max-width: 56ch; }
+
+.toggle {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-family: var(--font-body); font-size: 0.85rem; font-weight: 500;
+  padding: var(--space-2) var(--space-4); border-radius: 999px;
+  border: 1px solid var(--color-rule); background: var(--color-paper-2);
+  color: var(--color-ink); cursor: pointer; transition: border-color .12s ease;
+}
+.toggle:hover { border-color: var(--color-accent); }
+.toggle:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.toggle .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--color-accent); }
+
+.kind-group { margin-top: var(--space-6); }
+.kind-label {
+  font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--color-muted); font-weight: 600;
+  padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-rule);
+  margin-bottom: var(--space-3);
+  display: flex; align-items: baseline; gap: var(--space-3);
+}
+.kind-label .count { color: var(--color-accent); font-weight: 700; }
+
+.art-list { display: grid; gap: var(--space-2); }
+.art-item {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-3);
+  align-items: baseline; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-rule);
+}
+.art-item:last-child { border-bottom: none; }
+.art-item .title { font-weight: 600; color: var(--color-ink); }
+.art-item .title:hover { text-decoration: underline; }
+.art-item .desc { color: var(--color-muted); font-size: 0.9rem; margin-top: var(--space-1); }
+.art-item .meta { color: var(--color-muted); font-size: 0.78rem; margin-top: var(--space-1); font-family: var(--font-mono); }
+.art-item .slug { font-family: var(--font-mono); font-size: 0.78rem; color: var(--color-ink-2); }
+
+.site-footer { margin-top: var(--space-8); padding-top: var(--space-5); border-top: 1px solid var(--color-rule); font-size: 0.82rem; color: var(--color-muted); }
+.site-footer code { color: var(--color-ink-2); }
+
+@media (max-width: 480px) {
+  body { font-size: 16px; }
+  .wrap { padding: var(--space-5) var(--space-4) var(--space-7); }
+  .art-item { grid-template-columns: minmax(0, 1fr); }
+  .art-item .slug { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="site-head">
+    <div>
+      <h1>Folio samples</h1>
+      <p class="lede">Nine static artifacts under one domain — one per artifact kind, plus extras. Every one is a self-contained HTML file: zero external dependencies, zero API calls, themable from one token seam.</p>
+    </div>
+    <button class="toggle" id="theme-toggle" type="button" aria-pressed="false">
+      <span class="dot" aria-hidden="true"></span><span id="theme-label">Light</span>
+    </button>
+  </header>
+
+  <main id="groups"><!-- filled by JS --></main>
+
+  <div class="site-footer">
+    <p><strong>Folio v0.2</strong> · Published to <code id="domain"></code> · Zero external deps · <code>11</code> artifacts across <code>6</code> kinds</p>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById('theme-toggle');
+  var label = document.getElementById('theme-label');
+  function apply(t) {
+    root.setAttribute('data-theme', t);
+    btn.setAttribute('aria-pressed', t === 'dark' ? 'true' : 'false');
+    label.textContent = t === 'dark' ? 'Dark' : 'Light';
+    try { localStorage.setItem('folio-site-theme', t); } catch (e) {}
+  }
+  var saved = null; try { saved = localStorage.getItem('folio-site-theme'); } catch (e) {}
+  if (saved === 'dark' || saved === 'light') apply(saved);
+  else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) apply('dark');
+  btn.addEventListener('click', function () { apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); });
+
+  var site = {
+    "site": "folio-samples",
+    "domain": "folio-samples.surge.sh",
+    "artifacts": [
+      { "slug": "landing-folio", "kind": "landing", "bundle": "single-file", "path": "/artifacts/landing-folio/", "title": "Folio", "description": "Landing page for the folio skill — links to all samples", "ledger": [], "source": null },
+      { "slug": "doc-release-notes", "kind": "doc", "bundle": "single-file", "path": "/artifacts/doc-release-notes/", "title": "Folio v0.2 Release Notes", "description": "Readable document covering the v0.2 changes", "ledger": [], "source": null },
+      { "slug": "sheet-skills-inventory", "kind": "sheet", "bundle": "single-file", "path": "/artifacts/sheet-skills-inventory/", "title": "Skills Inventory", "description": "Sortable table of skills repo metrics", "ledger": [], "source": null },
+      { "slug": "dashboard-sample-coverage", "kind": "dashboard", "bundle": "single-file", "path": "/artifacts/dashboard-sample-coverage/", "title": "Artifact Sample Coverage", "description": "KPIs and CSS bar chart of sample artifact sizes", "ledger": [], "source": null },
+      { "slug": "dashboard-skills-ledger", "kind": "dashboard", "bundle": "multi-file", "path": "/artifacts/dashboard-skills-ledger/", "title": "Skills Ledger", "description": "Dashboard over the skills repo with real observed data", "ledger": [{ "dep": "chart.js@4.4.1", "kind": "script" }, { "dep": "skills-scan.json", "kind": "data" }], "source": null },
+      { "slug": "explainer-folio-loop", "kind": "explainer", "bundle": "single-file", "path": "/artifacts/explainer-folio-loop/", "title": "The Folio Loop", "description": "Step-by-step walkthrough of the 7-step artifact flow", "ledger": [], "source": null },
+      { "slug": "slides-introducing-folio", "kind": "slides", "bundle": "single-file", "path": "/artifacts/slides-introducing-folio/", "title": "Introducing Folio", "description": "6-slide presentation with keyboard navigation", "ledger": [], "source": null },
+      { "slug": "tool-oklch-builder", "kind": "tool", "bundle": "single-file", "path": "/artifacts/tool-oklch-builder/", "title": "OKLCH Token Builder", "description": "Live OKLCH palette generator with copy-to-clipboard", "ledger": [], "source": null },
+      { "slug": "kit-design-system", "kind": "tool", "bundle": "single-file", "path": "/artifacts/kit-design-system/", "title": "Folio Kit", "description": "Themable design kit — tokens, type, and components", "ledger": [], "source": null },
+      { "slug": "doc-changelog-v023", "kind": "doc", "bundle": "single-file", "path": "/artifacts/doc-changelog-v023/", "title": "Folio v0.2.x changelog", "description": "What changed across the v0.2 line — releases, load-bearing ideas, and this artifact's own promotion", "ledger": [], "source": null },
+      { "slug": "doc-changelog-v024-remix", "kind": "doc", "bundle": "single-file", "path": "/artifacts/doc-changelog-v024-remix/", "title": "Folio roadmap — what's next", "description": "A remix of the v0.2.x changelog, repurposed to look forward — open questions and principles to hold", "ledger": [], "source": { "slug": "doc-changelog-v023" } }
+    ]
+  };
+
+  document.getElementById('domain').textContent = site.domain;
+
+  var kindOrder = ['landing', 'doc', 'sheet', 'dashboard', 'explainer', 'slides', 'tool'];
+  var groups = {};
+  site.artifacts.forEach(function (a) {
+    if (!groups[a.kind]) groups[a.kind] = [];
+    groups[a.kind].push(a);
+  });
+
+  var html = '';
+  kindOrder.forEach(function (kind) {
+    if (!groups[kind]) return;
+    var items = groups[kind];
+    html += '<section class="kind-group">';
+    html += '<div class="kind-label">' + kind + ' <span class="count">' + items.length + '</span></div>';
+    html += '<div class="art-list">';
+    items.forEach(function (a) {
+      var deps = a.ledger.length;
+      var depLabel = deps === 0 ? '0 deps' : deps + ' dep' + (deps > 1 ? 's' : '');
+      var remixLabel = a.source ? ' · remixed' : '';
+      html += '<a class="art-item" href="' + a.path + '">';
+      html += '<div><div class="title">' + a.title + '</div><div class="desc">' + a.description + '</div><div class="meta">' + a.bundle + ' · ' + depLabel + remixLabel + '</div></div>';
+      html += '<div class="slug">' + a.slug + '</div>';
+      html += '</a>';
+    });
+    html += '</div></section>';
+  });
+  document.getElementById('groups').innerHTML = html;
+})();
+</script>
+</body>
+</html>

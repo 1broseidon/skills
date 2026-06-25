@@ -1,0 +1,54 @@
+{
+  "scanned_at": "2026-06-24",
+  "source": "observed — scan of /home/george/Projects/skills",
+  "skills": [
+    {
+      "slug": "anvil",
+      "version": "0.4.0",
+      "skill_lines": 317,
+      "refs": 53,
+      "verbs": 3,
+      "examples": 5,
+      "scripts": 0,
+      "total_files": 98,
+      "total_md_lines": 5896,
+      "maturity": "established"
+    },
+    {
+      "slug": "folio",
+      "version": "0.1.0",
+      "skill_lines": 263,
+      "refs": 13,
+      "verbs": 3,
+      "examples": 0,
+      "scripts": 0,
+      "total_files": 16,
+      "total_md_lines": 978,
+      "maturity": "scaffold"
+    },
+    {
+      "slug": "scribe",
+      "version": "0.3.1",
+      "skill_lines": 290,
+      "refs": 21,
+      "verbs": 3,
+      "examples": 1,
+      "scripts": 0,
+      "total_files": 94,
+      "total_md_lines": 1791,
+      "maturity": "established"
+    },
+    {
+      "slug": "prompt-mechanics",
+      "version": "0.1.0",
+      "skill_lines": 118,
+      "refs": 2,
+      "verbs": 0,
+      "examples": 0,
+      "scripts": 0,
+      "total_files": 4,
+      "total_md_lines": 431,
+      "maturity": "seed"
+    }
+  ]
+}

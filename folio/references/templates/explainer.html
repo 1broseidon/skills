@@ -1,0 +1,88 @@
+<!-- Folio · template: explainer · kind: explainer · bundle: single-file · host: local -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}} · Folio explainer template</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2345577d'/%3E%3Cpath d='M7 21l5-8 4 5 3-4 6 7' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+:root {
+  --font-display: ui-serif, Georgia, "Iowan Old Style", serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-paper:    oklch(98% 0.006 90);
+  --color-paper-2:  oklch(95% 0.008 90);
+  --color-rule:     oklch(88% 0.010 90);
+  --color-ink:      oklch(22% 0.020 80);
+  --color-ink-2:    oklch(45% 0.012 80);
+  --color-muted:    oklch(55% 0.010 80);
+  --color-accent:   oklch(55% 0.180 245);
+  --color-accent-ink: oklch(99% 0.004 90);
+  --color-focus:    oklch(55% 0.180 245);
+
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px oklch(22% 0.02 80 / 0.06);
+  --page-max: 860px;
+}
+
+[data-theme="dark"] {
+  --color-paper:    oklch(16% 0.008 80);
+  --color-paper-2:  oklch(20% 0.010 80);
+  --color-rule:     oklch(30% 0.012 80);
+  --color-ink:      oklch(96% 0.005 90);
+  --color-ink-2:    oklch(78% 0.010 80);
+  --color-muted:    oklch(68% 0.010 80);
+  --color-accent:   oklch(72% 0.150 245);
+  --color-accent-ink: oklch(16% 0.02 80);
+  --color-focus:    oklch(74% 0.150 245);
+}
+:root { --measure: 65ch; --border-thin: 1px; --type--1: clamp(0.875rem, 0.82rem + 0.2vw, 0.95rem); --type-0: clamp(1rem, 0.94rem + 0.3vw, 1.125rem); --type-1: clamp(1.35rem, 1.12rem + 1vw, 1.8rem); --type-2: clamp(2rem, 1.45rem + 2.8vw, 3.2rem); --type-3: clamp(2.5rem, 1.7rem + 4vw, 4.8rem); --leading-body: 1.6; --leading-tight: 1.15; --weight-bold: 700; }
+* { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+body { margin: 0; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--type-0); line-height: var(--leading-body); }
+main { width: min(var(--page-max), calc(100% - var(--space-6))); margin: var(--space-7) auto; }
+h1,h2,h3 { font-style: normal; }
+h1, h2, h3 { font-family: var(--font-display); line-height: var(--leading-tight); }
+h1 { margin: 0 0 var(--space-3); font-size: var(--type-2); }
+h2 { margin: 0 0 var(--space-2); font-size: var(--type-1); }
+p, li { max-width: var(--measure); }
+.lede { color: var(--color-ink-2); margin-bottom: var(--space-6); }
+.steps { border-left: var(--border-thin) solid var(--color-rule); padding-left: var(--space-5); display: grid; gap: var(--space-6); }
+.step { display: grid; grid-template-columns: minmax(0, 4rem) minmax(0, 1fr); gap: var(--space-4); }
+.step-number { font-family: var(--font-display); font-size: var(--type-3); line-height: var(--leading-tight); color: var(--color-accent); }
+.step p { margin: 0; color: var(--color-ink-2); }
+.theme-toggle { position: fixed; top: var(--space-4); right: var(--space-4); border: var(--border-thin) solid var(--color-rule); border-radius: var(--radius-md); padding: var(--space-2) var(--space-3); background: var(--color-paper-2); color: var(--color-ink); font: inherit; }
+.theme-toggle:focus-visible { outline: var(--border-thin) solid var(--color-focus); outline-offset: var(--space-1); }
+@media (max-width: 560px) { .step { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<button class="theme-toggle" type="button" aria-pressed="false">Theme</button>
+<main>
+  <!-- Replace: title -->
+  <h1>{{explainer title}}</h1>
+  <p class="lede"><!-- Replace: lede -->Use this scaffold to explain {{process}} in four concrete steps.</p>
+  <div class="steps">
+    <section class="step"><div class="step-number">01</div><div><h2>{{step one}}</h2><p>Replace this with two short sentences. Describe the starting action and why it matters to the reader.</p></div></section>
+    <section class="step"><div class="step-number">02</div><div><h2>{{step two}}</h2><p>Replace this with two short sentences. Explain the key decision or handoff before moving on.</p></div></section>
+    <section class="step"><div class="step-number">03</div><div><h2>{{step three}}</h2><p>Replace this with two short sentences. Show the transformation, check, or evidence that proves progress.</p></div></section>
+    <section class="step"><div class="step-number">04</div><div><h2>{{step four}}</h2><p>Replace this with two short sentences. Close with the outcome and what the audience should do next.</p></div></section>
+  </div>
+</main>
+<script>
+(() => {
+  const root = document.documentElement;
+  const button = document.querySelector('.theme-toggle');
+  const read = () => { try { return localStorage.getItem('folio-theme'); } catch { return null; } };
+  const write = value => { try { localStorage.setItem('folio-theme', value); } catch {} };
+  const apply = value => { root.dataset.theme = value; button.setAttribute('aria-pressed', String(value === 'dark')); };
+  apply(read() || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  button.addEventListener('click', () => { const next = root.dataset.theme === 'dark' ? 'light' : 'dark'; apply(next); write(next); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+# Ephemeral tooling output
+.playwright-cli/
+
+# Dev status page (live, ephemeral)
+folio-dev/

@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Folio Kit — design kit</title>
+<meta name="color-scheme" content="light dark">
+<style>
+/* Folio · slug: kit-design-system · kind: tool · bundle: single-file · host: local→surge
+   deps: none (system fonts) · data: none · publish: surge (pending)
+   Hallmark discipline: locked OKLCH tokens via var() · no italic headers · AA contrast · mobile-safe */
+
+/* ---- Token block (the theme seam) ---- */
+:root {
+  --font-display: ui-serif, Georgia, "Iowan Old Style", "Apple Garamond", serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* light theme — warm editorial */
+  --color-paper:    oklch(98% 0.006 90);
+  --color-paper-2:  oklch(95% 0.008 90);
+  --color-rule:     oklch(88% 0.010 90);
+  --color-ink:      oklch(22% 0.020 80);
+  --color-ink-2:    oklch(45% 0.012 80);
+  --color-muted:    oklch(55% 0.010 80);
+  --color-accent:   oklch(58% 0.190 25);
+  --color-accent-ink: oklch(99% 0.004 90);
+  --color-focus:    oklch(55% 0.190 25);
+  --color-success:  oklch(55% 0.140 150);
+  --color-danger:   oklch(55% 0.200 25);
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px oklch(22% 0.02 80 / 0.06);
+  --shadow-md: 0 4px 12px oklch(22% 0.02 80 / 0.10);
+
+  --measure: 64ch;
+  --page-max: 1080px;
+}
+
+[data-theme="dark"] {
+  --color-paper:    oklch(16% 0.008 80);
+  --color-paper-2:  oklch(20% 0.010 80);
+  --color-rule:     oklch(30% 0.012 80);
+  --color-ink:      oklch(96% 0.005 90);
+  --color-ink-2:    oklch(78% 0.010 80);
+  --color-muted:    oklch(68% 0.010 80);
+  --color-accent:   oklch(70% 0.170 30);
+  --color-accent-ink: oklch(16% 0.02 80);
+  --color-focus:    oklch(72% 0.170 30);
+  --color-success:  oklch(70% 0.130 150);
+  --color-danger:   oklch(68% 0.190 25);
+
+  --shadow-sm: 0 1px 2px oklch(0% 0 0 / 0.40);
+  --shadow-md: 0 4px 12px oklch(0% 0 0 / 0.50);
+}
+
+/* ---- Reset ---- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.55;
+  font-feature-settings: "kern" 1;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; font-style: normal; margin: 0 0 var(--space-4); overflow-wrap: break-word; }
+h1 { font-size: clamp(2rem, 6vw, 3.25rem); letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.25rem, 3vw, 1.6rem); margin-top: var(--space-8); }
+h3 { font-size: 1.05rem; font-family: var(--font-body); font-weight: 600; letter-spacing: 0.01em; }
+p { margin: 0 0 var(--space-4); max-width: var(--measure); }
+code, .mono { font-family: var(--font-mono); font-size: 0.9em; }
+a { color: var(--color-accent); }
+
+/* ---- Layout ---- */
+.wrap { max-width: var(--page-max); margin: 0 auto; padding: var(--space-6) var(--space-5) var(--space-8); }
+header.kit-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4);
+  flex-wrap: wrap; padding-bottom: var(--space-5); border-bottom: 1px solid var(--color-rule);
+}
+header.kit-head .lede { color: var(--color-ink-2); max-width: 52ch; }
+header.kit-head .lede strong { color: var(--color-ink); font-weight: 600; }
+.section { padding: var(--space-4) 0 0; }
+.swatch-row, .token-row, .comp-row {
+  display: grid; gap: var(--space-3);
+  grid-template-columns: repeat(auto-fill, minmax(0, min(100%, 200px)));
+}
+.token-row { grid-template-columns: repeat(auto-fill, minmax(0, min(100%, 240px))); }
+
+/* ---- Theme toggle ---- */
+.toggle {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-family: var(--font-body); font-size: 0.9rem; font-weight: 500;
+  padding: var(--space-2) var(--space-4); border-radius: var(--radius-pill);
+  border: 1px solid var(--color-rule); background: var(--color-paper-2);
+  color: var(--color-ink); cursor: pointer;
+  transition: border-color .12s ease, background .12s ease;
+}
+.toggle:hover { border-color: var(--color-accent); }
+.toggle:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.toggle .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--color-accent); }
+
+/* ---- Swatches ---- */
+.swatch {
+  border: 1px solid var(--color-rule); border-radius: var(--radius-md);
+  overflow: hidden; background: var(--color-paper-2);
+}
+.swatch .chip { height: 64px; }
+.swatch .meta { padding: var(--space-2) var(--space-3); font-size: 0.78rem; }
+.swatch .meta .name { font-weight: 600; display: block; }
+.swatch .meta .val { color: var(--color-muted); font-family: var(--font-mono); }
+
+/* ---- Tokens table ---- */
+.token {
+  border: 1px solid var(--color-rule); border-radius: var(--radius-md);
+  padding: var(--space-3); background: var(--color-paper-2);
+  font-size: 0.85rem;
+}
+.token .k { font-family: var(--font-mono); color: var(--color-ink-2); display: block; margin-bottom: var(--space-1); }
+.token .v { font-family: var(--font-mono); color: var(--color-muted); }
+.token .demo { margin-top: var(--space-2); }
+
+/* ---- Type specimen ---- */
+.specimen .s-display { font-family: var(--font-display); font-size: clamp(1.75rem, 5vw, 2.75rem); line-height: 1.1; }
+.specimen .s-body { font-size: 1rem; }
+.specimen .s-small { font-size: 0.8rem; color: var(--color-muted); }
+
+/* ---- Components: button ---- */
+.btn {
+  font-family: var(--font-body); font-size: 0.95rem; font-weight: 600;
+  padding: var(--space-2) var(--space-4); border-radius: var(--radius-md);
+  border: 1px solid transparent; cursor: pointer;
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  transition: background .12s ease, border-color .12s ease, transform .05s ease;
+  line-height: 1.2;
+}
+.btn, .btn:visited { color: var(--color-accent-ink); }
+.btn-primary { background: var(--color-accent); }
+.btn-primary:hover { background: color-mix(in oklch, var(--color-accent) 88%, var(--color-ink) 12%); }
+.btn-primary:active { transform: translateY(1px); }
+.btn-ghost { background: transparent; color: var(--color-ink); border-color: var(--color-rule); }
+.btn-ghost:hover { border-color: var(--color-accent); color: var(--color-accent); }
+.btn:disabled, .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+.btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
+/* component demo rows */
+.comp-grid { display: grid; gap: var(--space-4); grid-template-columns: minmax(0,1fr); }
+.comp-grid > div { padding: var(--space-4); border: 1px solid var(--color-rule); border-radius: var(--radius-md); background: var(--color-paper-2); }
+.comp-grid .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-muted); margin-bottom: var(--space-3); font-weight: 600; }
+.row { display: flex; gap: var(--space-3); flex-wrap: wrap; align-items: center; }
+
+/* ---- Input ---- */
+.field { display: block; }
+.field label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: var(--space-1); }
+.input {
+  font-family: var(--font-body); font-size: 1rem;
+  padding: var(--space-2) var(--space-3); border-radius: var(--radius-md);
+  border: 1px solid var(--color-rule); background: var(--color-paper);
+  color: var(--color-ink); width: 100%; max-width: 360px;
+  transition: border-color .12s ease;
+}
+.input::placeholder { color: var(--color-muted); }
+.input:hover { border-color: var(--color-muted); }
+.input:focus { outline: none; border-color: var(--color-accent); box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-focus) 35%, transparent); }
+.input[aria-invalid="true"] { border-color: var(--color-danger); }
+
+/* ---- Card ---- */
+.card {
+  border: 1px solid var(--color-rule); border-radius: var(--radius-lg);
+  padding: var(--space-5); background: var(--color-paper);
+  box-shadow: var(--shadow-sm);
+}
+.card h3 { margin-bottom: var(--space-2); }
+.card p { font-size: 0.95rem; color: var(--color-ink-2); margin-bottom: var(--space-3); }
+
+/* ---- Badge ---- */
+.badge {
+  font-family: var(--font-body); font-size: 0.72rem; font-weight: 600;
+  padding: 2px var(--space-2); border-radius: var(--radius-pill);
+  border: 1px solid var(--color-rule); background: var(--color-paper-2); color: var(--color-ink-2);
+  letter-spacing: 0.02em;
+}
+.badge-accent { background: color-mix(in oklch, var(--color-accent) 18%, var(--color-paper)); border-color: transparent; color: var(--color-accent); }
+.badge-success { background: color-mix(in oklch, var(--color-success) 18%, var(--color-paper)); border-color: transparent; color: var(--color-success); }
+
+/* ---- Ledger footer ---- */
+.ledger { margin-top: var(--space-8); padding-top: var(--space-5); border-top: 1px solid var(--color-rule); font-size: 0.82rem; color: var(--color-muted); }
+.ledger dt { font-weight: 600; color: var(--color-ink-2); margin-top: var(--space-2); }
+.ledger dd { margin: 0 0 0 0; font-family: var(--font-mono); }
+.ledger code { color: var(--color-ink-2); }
+
+@media (max-width: 480px) {
+  body { font-size: 16px; }
+  .wrap { padding: var(--space-5) var(--space-4) var(--space-7); }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="kit-head">
+    <div>
+      <h1>Folio Kit</h1>
+      <p class="lede"><strong>A self-contained design kit</strong> — tokens, type, and components that open in a browser and theme from one seam. Zero external dependencies.</p>
+    </div>
+    <button class="toggle" id="theme-toggle" type="button" aria-pressed="false">
+      <span class="dot" aria-hidden="true"></span><span id="theme-label">Light</span>
+    </button>
+  </header>
+
+  <main>
+
+    <section class="section" id="tokens-color">
+      <h2>Color</h2>
+      <p>OKLCH tokens. Every color in this kit resolves through <code>var()</code> — swap the <code>[data-theme]</code> block to re-skin the whole page.</p>
+      <div class="swatch-row">
+        <div class="swatch"><div class="chip" style="background:var(--color-paper)"></div><div class="meta"><span class="name">paper</span><span class="val">--color-paper</span></div></div>
+        <div class="swatch"><div class="chip" style="background:var(--color-paper-2)"></div><div class="meta"><span class="name">paper-2</span><span class="val">--color-paper-2</span></div></div>
+        <div class="swatch"><div class="chip" style="background:var(--color-rule)"></div><div class="meta"><span class="name">rule</span><span class="val">--color-rule</span></div></div>
+        <div class="swatch"><div class="chip" style="background:var(--color-ink)"></div><div class="meta"><span class="name">ink</span><span class="val">--color-ink</span></div></div>
+        <div class="swatch"><div class="chip" style="background:var(--color-ink-2)"></div><div class="meta"><span class="name">ink-2</span><span class="val">--color-ink-2</span></div></div>
+        <div class="swatch"><div class="chip" style="background:var(--color-muted)"></div><div class="meta"><span class="name">muted</span><span class="val">--color-muted</span></div></div>
+        <div class="swatch"><div class="chip" style="background:var(--color-accent)"></div><div class="meta"><span class="name">accent</span><span class="val">--color-accent</span></div></div>
+        <div class="swatch"><div class="chip" style="background:var(--color-success)"></div><div class="meta"><span class="name">success</span><span class="val">--color-success</span></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="tokens-scale">
+      <h2>Scale &amp; shape</h2>
+      <div class="token-row">
+        <div class="token"><span class="k">--space-2</span><span class="v">8px</span><div class="demo"><div style="height:8px;width:100%;background:var(--color-accent);border-radius:var(--radius-sm)"></div></div></div>
+        <div class="token"><span class="k">--space-4</span><span class="v">16px</span><div class="demo"><div style="height:16px;width:100%;background:var(--color-accent);border-radius:var(--radius-sm)"></div></div></div>
+        <div class="token"><span class="k">--space-6</span><span class="v">32px</span><div class="demo"><div style="height:32px;width:100%;background:var(--color-accent);border-radius:var(--radius-sm)"></div></div></div>
+        <div class="token"><span class="k">--radius-md</span><span class="v">8px</span><div class="demo"><div style="height:32px;width:100%;background:var(--color-paper);border:1px solid var(--color-accent);border-radius:var(--radius-md)"></div></div></div>
+        <div class="token"><span class="k">--radius-lg</span><span class="v">14px</span><div class="demo"><div style="height:32px;width:100%;background:var(--color-paper);border:1px solid var(--color-accent);border-radius:var(--radius-lg)"></div></div></div>
+        <div class="token"><span class="k">--shadow-md</span><span class="v">4px 12px</span><div class="demo"><div style="height:32px;width:100%;background:var(--color-paper);box-shadow:var(--shadow-md);border-radius:var(--radius-sm)"></div></div></div>
+      </div>
+    </section>
+
+    <section class="section specimen" id="type">
+      <h2>Type</h2>
+      <p>System font stack — no CDN. <code>--font-display</code> (serif), <code>--font-body</code> (sans), <code>--font-mono</code>. Plugging a webfont here is a one-token change.</p>
+      <div class="card">
+        <p class="s-display">The quick brown fox jumps over the lazy dog.</p>
+        <p class="s-body">Body copy sets the measure at <code>64ch</code> and a 1.55 leading. This paragraph demonstrates comfortable reading width at desktop and graceful reflow on mobile.</p>
+        <p class="s-small">Small / caption text for metadata and ledger rows.</p>
+      </div>
+    </section>
+
+    <section class="section" id="components">
+      <h2>Components</h2>
+      <div class="comp-grid">
+
+        <div>
+          <div class="label">Button — primary / ghost / disabled</div>
+          <div class="row">
+            <button class="btn btn-primary" type="button">Run report</button>
+            <button class="btn btn-ghost" type="button">Export</button>
+            <button class="btn btn-primary" type="button" disabled>Disabled</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">Input field</div>
+          <div class="field">
+            <label for="name">Artifact slug</label>
+            <input class="input" id="name" type="text" placeholder="latency-hist" autocomplete="off">
+          </div>
+        </div>
+
+        <div>
+          <div class="label">Badges</div>
+          <div class="row">
+            <span class="badge">default</span>
+            <span class="badge badge-accent">accent</span>
+            <span class="badge badge-success">published</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">Card</div>
+          <div class="card" style="box-shadow:var(--shadow-md)">
+            <h3>Manifest ledger</h3>
+            <p>Every external dependency, data file, and publish target is a ledger row before any HTML is written. This artifact has none — system fonts, no fetch, no API.</p>
+            <div class="row"><button class="btn btn-primary" type="button">View ledger</button><span class="badge badge-success">complete</span></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <dl class="ledger">
+    <dt>Bundle</dt><dd>single-file</dd>
+    <dt>Deps</dt><dd>none (system fonts, no CDN, no fetch, no API)</dd>
+    <dt>Host</dt><dd>local → surge</dd>
+    <dt>Theme seam</dt><dd><code>[data-theme="..."]</code> on <code>&lt;html&gt;</code>; toggle swaps the token block</dd>
+  </dl>
+
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById('theme-toggle');
+  var label = document.getElementById('theme-label');
+
+  function apply(theme) {
+    root.setAttribute('data-theme', theme);
+    btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+    label.textContent = theme === 'dark' ? 'Dark' : 'Light';
+    try { localStorage.setItem('folio-kit-theme', theme); } catch (e) {}
+  }
+
+  var saved = null;
+  try { saved = localStorage.getItem('folio-kit-theme'); } catch (e) {}
+  if (saved === 'dark' || saved === 'light') {
+    apply(saved);
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    apply('dark');
+  }
+
+  btn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    apply(next);
+  });
+})();
+</script>
+</body>
+</html>

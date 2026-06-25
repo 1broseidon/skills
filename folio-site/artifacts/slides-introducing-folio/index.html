@@ -1,0 +1,176 @@
+<!-- Folio · slug: slides-introducing-folio · kind: slides · bundle: single-file · host: surge -->
+<!doctype html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title>Introducing Folio</title>
+  <link rel='icon' href='data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2032%2032%27%3E%3Crect%20width=%2732%27%20height=%2732%27%20rx=%276%27%20fill=%27%2345577d%27/%3E%3Cpath%20d=%27M7%2021l5-8%204%205%203-4%206%207%27%20fill=%27none%27%20stroke=%27white%27%20stroke-width=%272.5%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27/%3E%3C/svg%3E'>
+  <style>
+:root {
+  --font-display: ui-serif, Georgia, "Iowan Old Style", serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-paper:    oklch(98% 0.006 90);
+  --color-paper-2:  oklch(95% 0.008 90);
+  --color-paper-3:  oklch(92% 0.010 90);
+  --color-rule:     oklch(88% 0.010 90);
+  --color-ink:      oklch(22% 0.020 80);
+  --color-ink-2:    oklch(45% 0.012 80);
+  --color-muted:    oklch(55% 0.010 80);
+  --color-accent:   oklch(55% 0.180 245);
+  --color-accent-2: oklch(58% 0.150 25);
+  --color-accent-ink: oklch(99% 0.004 90);
+  --color-focus:    oklch(55% 0.180 245);
+  --color-success:  oklch(55% 0.140 150);
+  --color-warn:     oklch(70% 0.150 75);
+  --color-danger:   oklch(55% 0.200 25);
+
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 14px; --radius-pill: 999px;
+  --shadow-sm: 0 1px 2px oklch(22% 0.02 80 / 0.06);
+  --shadow-md: 0 4px 12px oklch(22% 0.02 80 / 0.10);
+  --page-max: 1080px;
+}
+
+[data-theme="dark"] {
+  --color-paper:    oklch(16% 0.008 80);
+  --color-paper-2:  oklch(20% 0.010 80);
+  --color-paper-3:  oklch(24% 0.012 80);
+  --color-rule:     oklch(30% 0.012 80);
+  --color-ink:      oklch(96% 0.005 90);
+  --color-ink-2:    oklch(78% 0.010 80);
+  --color-muted:    oklch(68% 0.010 80);
+  --color-accent:   oklch(72% 0.150 245);
+  --color-accent-2: oklch(72% 0.140 30);
+  --color-accent-ink: oklch(16% 0.02 80);
+  --color-focus:    oklch(74% 0.150 245);
+  --color-success:  oklch(70% 0.130 150);
+  --color-warn:     oklch(75% 0.140 75);
+  --color-danger:   oklch(68% 0.190 25);
+  --shadow-sm: 0 1px 2px oklch(0% 0 0 / 0.40);
+  --shadow-md: 0 4px 12px oklch(0% 0 0 / 0.50);
+}
+:root {
+  --space-0: 0px;
+  --line: 1px;
+  --line-2: 2px;
+  --measure: 65ch;
+  --font--1: clamp(0.8rem, 0.76rem + 0.2vw, 0.94rem);
+  --font-0: clamp(1rem, 0.95rem + 0.25vw, 1.14rem);
+  --font-1: clamp(1.2rem, 1.02rem + 0.9vw, 1.8rem);
+  --font-2: clamp(1.8rem, 1.2rem + 2.4vw, 3rem);
+  --font-5: clamp(3.2rem, 1.9rem + 8vw, 8rem);
+  --leading-tight: 1.05;
+  --leading-body: 1.45;
+  --tracking-tight: -0.035em;
+  --tracking-wide: 0.06em;
+  --weight-regular: 400;
+  --weight-semibold: 650;
+  --weight-bold: 780;
+  --font-control: inherit;
+  --edge-width: 22vw;
+  --viewport-min: 100dvh;
+}
+html, body { margin: var(--space-0); min-height: var(--viewport-min); overflow-x: clip; }
+body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--font-0); line-height: var(--leading-body); }
+.deck { min-height: var(--viewport-min); position: relative; }
+.slide { box-sizing: border-box; display: none; flex-direction: column; justify-content: center; min-height: var(--viewport-min); padding: var(--space-8) var(--space-7); }
+.slide.active { display: flex; }
+.slide-inner { max-width: var(--page-max); width: 100%; }
+h1, h2, h3 { font-style: normal; line-height: var(--leading-tight); margin: var(--space-0); }
+h1 { font-family: var(--font-display); font-size: var(--font-5); font-weight: var(--weight-bold); letter-spacing: var(--tracking-tight); }
+h2 { font-family: var(--font-display); font-size: var(--font-2); font-weight: var(--weight-bold); letter-spacing: var(--tracking-tight); max-width: var(--measure); }
+p, li { color: var(--color-ink-2); font-size: var(--font-1); max-width: var(--measure); }
+ul { margin: var(--space-5) var(--space-0) var(--space-0); padding-left: var(--space-5); }
+code { background: var(--color-paper-2); border: var(--line) solid var(--color-rule); border-radius: var(--radius-md); color: var(--color-ink); display: inline-block; font-family: var(--font-mono); font-size: var(--font-0); padding: var(--space-3) var(--space-4); }
+.theme-toggle, .nav-btn { background: var(--color-paper-2); border: var(--line) solid var(--color-rule); border-radius: var(--radius-pill); box-shadow: var(--shadow-sm); color: var(--color-ink); cursor: pointer; font: var(--font-control); font-size: var(--font--1); font-weight: var(--weight-semibold); padding: var(--space-2) var(--space-3); position: fixed; z-index: 3; }
+.theme-toggle { right: var(--space-5); top: var(--space-5); }
+.nav-btn { bottom: var(--space-5); }
+.prev { left: var(--space-5); }
+.next { left: calc(var(--space-5) + var(--space-8)); }
+.theme-toggle:focus-visible, .nav-btn:focus-visible { outline: var(--line-2) solid var(--color-focus); outline-offset: var(--space-1); }
+.counter { bottom: var(--space-5); color: var(--color-muted); font-family: var(--font-mono); font-size: var(--font--1); position: fixed; right: var(--space-5); }
+.edge { bottom: var(--space-8); position: fixed; top: var(--space-8); width: var(--edge-width); z-index: 2; }
+.edge-left { left: var(--space-0); }
+.edge-right { right: var(--space-0); }
+.kinds { display: grid; gap: var(--space-3); grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 0.8fr); margin-top: var(--space-6); max-width: var(--page-max); }
+.kind, .node { background: var(--color-paper-2); border: var(--line) solid var(--color-rule); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); }
+.flow { align-items: center; display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
+.node { color: var(--color-ink); font-weight: var(--weight-semibold); }
+.arrow { color: var(--color-accent); font-weight: var(--weight-bold); }
+.accent { color: var(--color-accent); }
+@media (max-width: 720px) { .slide { padding: var(--space-7) var(--space-4); } .theme-toggle { right: var(--space-4); top: var(--space-4); } .prev { left: var(--space-4); } .next { left: calc(var(--space-4) + var(--space-8)); } .counter { right: var(--space-4); } .kinds { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } p, li { font-size: var(--font-0); } }
+@media (max-width: 420px) { .kinds { grid-template-columns: minmax(0, 1fr); } .nav-btn { bottom: var(--space-4); } .counter { bottom: var(--space-4); } }
+  </style>
+</head>
+<body>
+  <button class='theme-toggle' type='button' data-theme-toggle aria-pressed='false'>Dark mode</button>
+  <main class='deck' aria-live='polite'>
+    <section class='slide active'><div class='slide-inner'><h1>Folio</h1><p>Static artifacts that open in a browser</p></div></section>
+    <section class='slide'><div class='slide-inner'><h2>The problem</h2><ul><li>Agents fabricate backends that do not exist.</li><li>They paste mystery CDNs into otherwise local artifacts.</li><li>They claim fake publish URLs without command evidence.</li></ul></div></section>
+    <section class='slide'><div class='slide-inner'><h2>The discipline</h2><ul><li>Static documents only: no live network calls or socket streams.</li><li>Manifest ledger before build: deps, data, mocks, URLs.</li><li>Local-first: a folder on disk before optional publish.</li></ul></div></section>
+    <section class='slide'><div class='slide-inner'><h2>Seven artifact kinds</h2><div class='kinds'><div class='kind'>doc</div><div class='kind'>sheet</div><div class='kind'>dashboard</div><div class='kind'>explainer</div><div class='kind'>slides</div><div class='kind'>tool</div><div class='kind'>landing</div></div></div></section>
+    <section class='slide'><div class='slide-inner'><h2>The loop</h2><div class='flow'><span class='node'>Inventory</span><span class='arrow'>→</span><span class='node'>Picks</span><span class='arrow'>→</span><span class='node'>Ledger</span><span class='arrow'>→</span><span class='node'>Build</span><span class='arrow'>→</span><span class='node'>Verify</span><span class='arrow'>→</span><span class='node'>Gates</span><span class='arrow'>→</span><span class='node'>Handoff</span></div></div></section>
+    <section class='slide'><div class='slide-inner'><h2>Get started</h2><p>Add the skill, then ask for one static artifact.</p><code>npx skills add 1broseidon/skills --skill folio</code></div></section>
+  </main>
+  <button class='nav-btn prev' type='button' data-prev aria-label='Previous slide'>←</button>
+  <button class='nav-btn next' type='button' data-next aria-label='Next slide'>→</button>
+  <div class='counter' data-counter>1 / 6</div>
+  <div class='edge edge-left' data-prev aria-hidden='true'></div>
+  <div class='edge edge-right' data-next aria-hidden='true'></div>
+  <script>
+(function () {
+  const root = document.documentElement;
+  const key = 'folio-theme';
+  const toggle = document.querySelector('[data-theme-toggle]');
+  function getSaved() { try { return localStorage.getItem(key); } catch (error) { return null; } }
+  function save(value) { try { localStorage.setItem(key, value); } catch (error) {} }
+  const saved = getSaved();
+  if (saved === 'dark' || saved === 'light') root.dataset.theme = saved;
+  function sync() {
+    const isDark = root.dataset.theme === 'dark';
+    toggle.textContent = isDark ? 'Light mode' : 'Dark mode';
+    toggle.setAttribute('aria-pressed', String(isDark));
+  }
+  toggle.addEventListener('click', function () {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    save(next);
+    sync();
+  });
+  sync();
+})();
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const counter = document.querySelector('[data-counter]');
+  let index = 0;
+  let touchStart = null;
+  function show(nextIndex) {
+    index = Math.max(0, Math.min(slides.length - 1, nextIndex));
+    slides.forEach(function (slide, i) { slide.classList.toggle('active', i === index); });
+    counter.textContent = String(index + 1) + ' / ' + String(slides.length);
+  }
+  function next() { show(index + 1); }
+  function prev() { show(index - 1); }
+  document.querySelectorAll('[data-next]').forEach(function (el) { el.addEventListener('click', next); });
+  document.querySelectorAll('[data-prev]').forEach(function (el) { el.addEventListener('click', prev); });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'ArrowRight') next();
+    if (event.key === 'ArrowLeft') prev();
+  });
+  document.addEventListener('touchstart', function (event) { touchStart = event.changedTouches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', function (event) {
+    if (touchStart === null) return;
+    const delta = event.changedTouches[0].clientX - touchStart;
+    if (Math.abs(delta) > 42) delta < 0 ? next() : prev();
+    touchStart = null;
+  }, { passive: true });
+  show(0);
+})();
+  </script>
+</body>
+</html>
