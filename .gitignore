@@ -1,5 +1,19 @@
-# Ephemeral tooling output
-.playwright-cli/
+# Allowlist .gitignore — this repo tracks ONLY the skills and its own meta.
+# Everything at the root is ignored by default; entries are re-included below.
+# To add something to the repo, add an explicit `!` un-ignore rule for it.
 
-# Dev status page (live, ephemeral)
-folio-dev/
+# Ignore everything at the repo root...
+/*
+
+# ...then re-include only what belongs.
+
+# Repo meta
+!/.gitignore
+!/README.md
+!/scripts/
+
+# Skills (each is a self-contained skill with its own SKILL.md + references)
+!/anvil/
+!/folio/
+!/prompt-mechanics/
+!/scribe/
