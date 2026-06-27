@@ -4,6 +4,18 @@ Default: **`local`**. Publish only when the user explicitly requests it.
 
 **Silent by default.** Do not advertise publish capabilities, suggest host profiles, or mention surge/gh-pages/cf-pages unless the user asks. The artifact works locally; publish is opt-in.
 
+## Three ways to reach an artifact
+
+Match the reach to what the user actually asked for. Don't jump to a durable deploy when they only want to show someone.
+
+| Tier | How | Reach | Lifetime |
+| --- | --- | --- | --- |
+| **local** | `scripts/serve.js` (loopback) | your machine | while serving |
+| **share** | `scripts/share.js` (tunnel) | temporary public URL | while the process runs |
+| **publish** | a host profile below | durable public URL | until torn down |
+
+**"Let someone see this right now" → share, not publish.** A tunnel (default localhost.run — no install, no account) exposes the running local server at a temporary URL; the machine stays the host and the link dies with the process. That is almost always what "send me a link" means. See `references/verbs/share.md`. The profiles below are for **durable** hosting elsewhere — when the link must outlive the session.
+
 ## Profile summary
 
 | Profile | Output | Publish command (typical) | Auth |
@@ -45,26 +57,29 @@ Never store credentials in the artifact, the README, or the manifest. Auth is a 
 
 **Use when:** agent or human opens from workspace; default for all runs.
 
-**Open a single artifact:**
+**Recommended — one command** (ensures `artifacts/`, regenerates the index/search page from the ledger, picks an open port, serves the site root):
 
 ```bash
-npx --yes serve <site-root>/artifacts/<slug>
+node <folio-skill>/scripts/serve.js <site-root>
 ```
 
-**Open the whole site (with index):**
+**Or serve manually:**
 
 ```bash
-npx --yes serve <site-root>
+cd <site-root> && python3 -m http.server 8000 --bind 127.0.0.1   # whole site (with index)
+npx --yes serve <site-root>/artifacts/<slug>                      # a single artifact
 ```
 
 **Caveats:**
 
-- `fetch('./data.json')` fails under `file://` — document server requirement in README and handoff.
+- `fetch('./data.json')` fails under `file://` — serve over HTTP, and document the server requirement in README and handoff.
 - Prefer relative paths only. Artifacts link to each other via root-relative paths (`/artifacts/<slug>/`).
+
+**Full local-run guide** — two run modes, the `serve.js` launcher, runtime probe order for Python/Node/PHP/BusyBox, serve-from-site-root rule, reuse-before-spawn, port/bind selection, backgrounding, and exec-blocked honesty: see `references/local-server.md`.
 
 ## surge
 
-**Use when:** user wants a fast public URL without repo setup.
+**Use when:** user wants a durable public URL without repo setup (for a temporary link to show someone, use `share` instead).
 
 **Prereqs:** `npx surge whoami` succeeds.
 
@@ -118,10 +133,12 @@ Defer to [wrangler](https://developers.cloudflare.com/workers/) skill for Worker
 ## Picking a profile
 
 ```text
-User asked for a URL without GitHub? → surge (if CLI available and authed)
-Site lives in repo docs?             → gh-pages
-Already on Cloudflare?               → cf-pages
-Otherwise                            → local
+Just want to show someone right now?  → share (tunnel; see verbs/share.md)
+Link must persist (bookmark, deploy)? ↓
+  Site lives in a repo's docs?        → gh-pages
+  Already on Cloudflare?              → cf-pages (or cf-worker)
+  Fast durable URL, no repo?          → surge (if CLI available and authed)
+Otherwise                             → local
 ```
 
-If multiple fit, ask once. If unanswered, stay on `local`.
+A bare "can I get a URL?" usually means **share**, not a deploy — confirm whether the link needs to persist before publishing. If multiple durable profiles fit, ask once. If unanswered, stay on `local`.

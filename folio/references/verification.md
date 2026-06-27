@@ -24,8 +24,17 @@ check | command/evidence | result | notes
 
 | Check | How |
 | --- | --- |
-| Serves | `npx serve <dir>` then load `http://localhost:3000` (port may vary) |
-| fetch/data | If JS uses `fetch`, confirm load works via server — not `file://` |
+| Serves | Start a static server from the **site root** (not the artifact subdir) — `node <folio-skill>/scripts/serve.js <site-root>`, or a manual runtime; probe with `curl -sI http://127.0.0.1:<port>/`. See `references/local-server.md` for run modes, runtime probe order, reuse-before-spawn, and bind/port guidance. |
+| fetch/data | If JS uses `fetch`, confirm load works via server — not `file://` (see host-profiles.md for why `file://` breaks relative fetches and module imports) |
+
+### share (tunnel)
+
+| Check | How |
+| --- | --- |
+| Local first | The artifact passes `local` verification before the tunnel opens — a tunnel to a broken server is a broken link |
+| Public URL | Use the **observed** URL printed by `scripts/share.js`; never invent one |
+| Reachable (optional) | When the sandbox allows egress, `curl -sI <url>/` returns 200 and one artifact path loads |
+| Ephemeral noted | Handoff states the link is temporary (dies with the process), not a deploy |
 
 ### surge / gh-pages / cf-pages / cf-worker
 

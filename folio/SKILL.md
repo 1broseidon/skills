@@ -1,7 +1,7 @@
 ---
 name: folio
-description: "Static artifact craft skill for self-contained HTML/CSS/JS documents: docs, sheets, dashboards, explainers, slides, tools, and landing pages. Use when the user asks for a durable, openable, shareable web deliverable they'll keep or hand off — a report, a dashboard, a slide deck, a data table, a page. Local folder first, optional publish to Surge, GitHub Pages, or Cloudflare Pages. Not for quick look renders, inline snippets, or throwaway scratch. Not for SPA frameworks, backend APIs, database apps, or production product UI."
-version: 0.2.4
+description: "Static artifact craft skill for self-contained HTML/CSS/JS documents: docs, sheets, dashboards, explainers, slides, tools, and landing pages. Use when the user asks for a durable, openable, shareable web deliverable they'll keep or hand off — a report, a dashboard, a slide deck, a data table, a page. Local folder first, temporary public link via tunnel (localhost.run), optional durable publish to Surge, GitHub Pages, or Cloudflare. Not for quick look renders, inline snippets, or throwaway scratch. Not for SPA frameworks, backend APIs, database apps, or production product UI."
+version: 0.2.6
 ---
 
 # Folio
@@ -37,7 +37,8 @@ Use only these terms in Folio output.
 | **artifact** | A self-contained static web deliverable: HTML with CSS/JS, runnable in a browser |
 | **bundle** | One of `single-file` (inline CSS/JS) or `multi-file` (linked assets in one directory) |
 | **artifact kind** | One of doc, sheet, dashboard, explainer, slides, tool, landing |
-| **host profile** | Where the site lives: `local`, `surge`, `gh-pages`, `cf-pages`, `cf-worker` |
+| **host profile** | Where the site lives durably: `local`, `surge`, `gh-pages`, `cf-pages`, `cf-worker` |
+| **share (tunnel)** | A temporary public URL to the running local server, via `localhost.run` (default) or `ngrok`. Ephemeral, machine stays host — not a publish |
 | **site root** | A directory containing an `index.html` and an `artifacts/` tree, published as one domain. Artifacts are paths under it, not separate subdomains. |
 | **site manifest** | `.folio/site.json` — the canonical source of truth. Carries domain + per-artifact registry (slug, kind, bundle, ledger, provenance, publish state). Stamps, index, and audit all derive from it. |
 | **standalone artifact** | An artifact with no site root. The HTML stamp is its only manifest. Upgrades to a site entry when a second artifact appears. |
@@ -54,7 +55,8 @@ Use only these terms in Folio output.
 - Default: create or update one artifact. Follow the artifact flow. A single artifact is standalone by default — no site root required.
 - `folio audit <path|url>`: read-only audit. Do not edit. Read `references/verbs/audit.md`.
 - `folio describe <path|url|slug>`: read an artifact's manifest entry (kind, ledger, provenance, publish state). Read `references/verbs/describe.md`.
-- `folio publish <site-root>`: deploy a site root (all artifacts) to the chosen host profile. Read `references/verbs/publish.md`.
+- `folio share <site-root>`: open a **temporary** public link to the locally running site via a tunnel (default localhost.run — no install, no account; `--ngrok` alt). The machine stays the host; the URL dies with the process. Use this for "let someone see it right now," not publish. Read `references/verbs/share.md`.
+- `folio publish <site-root>`: deploy a site root (all artifacts) to the chosen host profile for **durable** hosting elsewhere. Regenerate the index first (`scripts/gen-index.js`), then deploy. Read `references/verbs/publish.md`.
 - `folio remix <path|url>`: fork an artifact and change it while preserving manifest honesty and recording source lineage. Read `references/verbs/remix.md`.
 
 One run = one artifact unless the user names multiple. Prefer the smallest bundle that satisfies the request. A single artifact is standalone; multiple artifacts live under one site root and publish as one domain. Read `references/site-index.md` for the site-root model and standalone-to-site upgrade.
@@ -66,7 +68,7 @@ One run = one artifact unless the user names multiple. Prefer the smallest bundl
 1. **Runnable before pretty.** The artifact opens in a browser and core interactions work before polish or publish.
 2. **Static documents only.** No `fetch()` to external APIs, no WebSocket connections, no `XMLHttpRequest` to live endpoints. Data is embedded inline, loaded from a local file via `fetch('./data/…')`, or generated at build time. The only network requests an artifact makes are to ledgered CDN scripts, styles, and fonts.
 3. **Manifest honesty.** CDN scripts, fonts, images, and data files are ledger rows, not surprises.
-4. **Local-first.** Default host profile is `local`. Publish only when the user asks or `folio publish` is invoked. Never advertise publish capabilities proactively.
+4. **Local-first, then share, then publish.** Default host profile is `local`. Run it the dynamic way — `node <folio-skill>/scripts/serve.js <site-root>` ensures the `artifacts/` folder, regenerates the index/search page from the ledger, picks an open port, and serves over HTTP (plain `file://` is fine for a fully inlined single file, but breaks `fetch` and module imports). See `references/local-server.md`. To **show someone right now**, open a temporary tunnel — `node <folio-skill>/scripts/share.js <site-root>` (default localhost.run, no install/account); the link is ephemeral and the machine stays the host. **Durable** hosting elsewhere is `publish` — only when the user asks or `folio publish` is invoked. Never advertise share or publish capabilities proactively.
 5. **No secrets in static files.** API keys, tokens, and private URLs do not belong in HTML/JS committed or published.
 6. **Not ugly.** Artifacts follow the visual baseline. Read `references/visual-baseline.md` before build.
 
@@ -115,8 +117,9 @@ Resolve scope before broad design questions.
 | Concept explainer | `multi-file` | `local` | Dense raw data dumps |
 | Slide deck | `multi-file` | `local` | Scroll layouts, widgets |
 | Shared teammate artifact | `multi-file` | `local` | Framework build step |
-| Public demo link | `multi-file` | `surge` or `cf-pages` | Auth, server logic |
-| Agent handoff preview | `single-file` preferred | `local` | Publish unless asked |
+| Show someone right now | `single-file` or `multi-file` | `share` (tunnel) | Deploy ceremony, durable host |
+| Durable public link | `multi-file` | `surge` or `cf-pages` | Auth, server logic |
+| Agent handoff preview | `single-file` preferred | `local` | Share/publish unless asked |
 
 Ambiguous request: ask once, tersely. Example: "Single self-contained file or a small folder with separate CSS/JS?" If unanswered, choose the smallest bundle that works.
 
@@ -210,7 +213,7 @@ Apply before handoff. Any `no` triggers a fix loop.
 
 | Gate | Check |
 | --- | --- |
-| `opens-locally` | Entry HTML loads via static server (or honest `file://` caveat documented) |
+| `opens-locally` | Entry HTML loads via static server (or honest `file://` caveat documented); for server setup see `references/local-server.md` (`scripts/serve.js` is the one-command path) |
 | `console-clean` | No uncaught errors on primary path |
 | `ledger-complete` | Every external dep and data source appears in the ledger |
 | `no-secrets` | No keys, tokens, or private URLs in source |
@@ -267,7 +270,7 @@ Optional per-project layout:
 
 ```text
 site-root/
-  index.html          # auto-generated site index, groups artifacts by kind
+  index.html          # generated by scripts/gen-index.js (filter + kind groups)
   artifacts/
     <slug>/
       index.html
@@ -290,8 +293,10 @@ Keep SKILL.md lean. Load before proceeding when a path is listed.
 
 - Kind choice: `references/artifact-types.md`
 - Build: `references/templates/<kind>.html` — the gate-passing starter for the chosen kind
+- Local run / serving: `references/local-server.md` (run modes, `scripts/serve.js`, runtime probe)
+- Share / temporary link: `references/verbs/share.md` (tunnel via `scripts/share.js`, localhost.run default, ngrok alt)
 - Host/publish: `references/host-profiles.md`, `references/verbs/publish.md`, `references/site-index.md`
-- User input or public publish: `references/security.md`
+- User input, share, or public publish: `references/security.md`
 - Verbs: `references/verbs/audit.md`, `references/verbs/describe.md`, `references/verbs/remix.md`
 - Anti-patterns: `references/anti-patterns.md` (before build), `references/slop-test.md` (after build)
 - Conventions: `references/folio-md.md`
@@ -302,7 +307,7 @@ Keep SKILL.md lean. Load before proceeding when a path is listed.
 
 ## v2 limits
 
-In scope: static HTML/CSS/JS artifacts (doc, sheet, dashboard, explainer, slides, tool, landing), single-file and multi-file bundles, local folder output, optional Surge / GitHub Pages / Cloudflare Pages publish, audit/remix/publish verbs, manifest ledger, vanilla JS + ledgered CDN libs, visual baseline (OKLCH tokens, system fonts, anti-AI-slop rules).
+In scope: static HTML/CSS/JS artifacts (doc, sheet, dashboard, explainer, slides, tool, landing), single-file and multi-file bundles, local folder output, temporary public link via tunnel (localhost.run default, ngrok alt), optional durable Surge / GitHub Pages / Cloudflare Pages publish, audit/describe/share/remix/publish verbs, manifest ledger, vanilla JS + ledgered CDN libs, visual baseline (OKLCH tokens, system fonts, anti-AI-slop rules).
 
 Deferred: external API integration (v0.3 opt-in with evidence + offline degradation), React/Vue/Svelte build pipelines, SSR, databases, WebSocket backends, artifact versioning UI, collaborative editing, automated screenshot regression.
 

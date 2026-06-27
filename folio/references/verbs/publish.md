@@ -1,6 +1,8 @@
 # folio publish
 
-Deploy a site root (all artifacts) to a host profile. **Do not publish** unless the user invoked publish or explicitly asked for a public URL.
+Deploy a site root (all artifacts) to a host profile for **durable** hosting elsewhere — a URL that outlives the session and the machine. **Do not publish** unless the user invoked publish or explicitly asked to host it somewhere permanent.
+
+**Publish is not the quick-share path.** If the user just wants to show someone the artifact right now, that is `folio share` — a temporary tunnel to the locally running server (default localhost.run, no install, no account). Reach for publish only when the link must persist. See `references/verbs/share.md`.
 
 ## Preconditions
 
@@ -14,10 +16,11 @@ Deploy a site root (all artifacts) to a host profile. **Do not publish** unless 
 2. **Read site manifest** — get domain from `.folio/site.json`. If missing or null, ask the user to name one. Do not invent domains.
 3. **Security checklist** — re-run for public profiles. Read `security.md`.
 4. **Static-only check** — confirm no `fetch()` to external APIs across all artifacts in the tree. Published artifacts must not depend on backends the visitor can't reach.
-5. **Deploy** — run profile-specific command against the site root (see `host-profiles.md`).
-6. **Record URL** — copy the **observed** URL from command output. Update `.folio/site.json` `published_url` and `last_published`. Update each artifact's `last_published`. Never claim a URL without evidence.
-7. **Verify** — `curl -sI <url>` on the index, then `curl -sI` on each artifact path. All must return 200.
-8. **Handoff** — domain URL, artifact path list, rerun instructions, teardown note if ephemeral.
+5. **Regenerate index** — `node <folio-skill>/scripts/gen-index.js <site-root>`. Re-emits `index.html` from `.folio/site.json` so the filter and list match the manifest. Never hand-edit the embedded JSON.
+6. **Deploy** — run profile-specific command against the site root (see `host-profiles.md`).
+7. **Record URL** — copy the **observed** URL from command output. Update `.folio/site.json` `published_url` and `last_published`. Update each artifact's `last_published`. Never claim a URL without evidence.
+8. **Verify** — `curl -sI <url>` on the index, then `curl -sI` on each artifact path. All must return 200.
+9. **Handoff** — domain URL, artifact path list, rerun instructions, teardown note if ephemeral.
 
 ## Profile notes
 

@@ -12,7 +12,27 @@
 - [x] Security baseline (no secrets, mock labeling, user input)
 - [x] `folio.md` convention artifact (opt-in)
 
-## v0.2.4 — current
+## v0.2.6 — current
+
+**Theme: Share before you publish — tunnel by default**
+
+- [x] `scripts/share.js` — zero-dep launcher: starts (or attaches via `--port`) the local server, opens a tunnel, parses and prints the **observed** public URL, tears the tunnel and server down together on exit (no orphans)
+- [x] Default provider **localhost.run** over SSH — no install, no account (`nokey@`, host-key auto-accept, keepalives); `--ngrok` alternative with install/authtoken guidance
+- [x] `folio share` verb + `references/verbs/share.md` — separates ephemeral sharing from durable publish; security pass (public exposure) and honest-URL discipline built in
+- [x] Three-tier reach model wired through SKILL.md, README, and `host-profiles.md`: **local** (loopback) → **share** (tunnel) → **publish** (durable host)
+- [x] Reframed `publish` as durable-only and fixed the "picking a profile" tree so "just show someone" routes to `share`, not surge — undoing the publish-overcomplication
+- [x] URL honesty: the public link is printed only after it is seen in the provider's own output; never invented
+
+## v0.2.5 — done
+
+**Theme: Run it locally, the dynamic way**
+
+- [x] `scripts/serve.js` — zero-dep launcher: ensures `artifacts/`, regenerates the index/search page from the ledger, picks an open port (8000 → 8080 → 8888 → OS-assigned), serves the site root over loopback, prints URL + PID
+- [x] `references/local-server.md` — canonical system-agnostic local-run guide: `file://` vs HTTP run modes, one-command launch, runtime probe order (Python/Node/PHP/BusyBox), serve-from-site-root rule, reuse-before-spawn, bind/port, exec-blocked honesty
+- [x] Slimmed `host-profiles.md` local section to a pointer (single source of truth); retargeted SKILL.md gate + `verification.md` cross-refs to `local-server.md`
+- [x] Default index/search page auto-regenerated on every `serve.js` launch (stays honest with the manifest ledger)
+
+## v0.2.4 — done
 
 **Theme: Entrance gate — prevent overuse**
 

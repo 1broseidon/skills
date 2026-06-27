@@ -53,12 +53,29 @@ The kind always lives in the folio stamp and the site manifest. The index groups
 
 The index is itself a folio artifact (`kind: landing`). It:
 
-- Embeds the site manifest inline (JSON in a `<script>` block)
+- Embeds the site manifest inline (JSON in a `<script type="application/json">` block)
 - Groups artifacts by kind, showing kind label + count
 - Lists each artifact as: title, description, slug
 - Links to each artifact at its relative path (`/artifacts/<slug>/`)
+- Carries a **filter box**: type to narrow by title, description, or slug; empty kind groups collapse; `/` focuses the box, `Esc` clears it
 - Follows the visual baseline (token block, no italic headings, mobile-safe)
 - Includes a light/dark toggle
+
+## Regenerating the index
+
+The index **derives** from `.folio/site.json` — never hand-edit the embedded JSON. Regenerate it with the bundled generator (zero npm deps, Node stdlib only):
+
+```bash
+node <folio-skill>/scripts/gen-index.js <site-root>
+```
+
+The launcher `scripts/serve.js` runs this automatically on every local launch, so the index/search page stays current while you serve. To regenerate without serving, run the generator directly. It reads `<site-root>/.folio/site.json` and writes `<site-root>/index.html`. It is idempotent. Run it:
+
+- After adding, removing, or renaming an artifact
+- After editing any artifact's `title`, `description`, `kind`, or ledger in `site.json`
+- As a fixed step in every publish (see `references/verbs/publish.md`)
+
+This retires the manual-sync drift class: the filter and the list both read the same embedded data, which the generator guarantees matches `site.json`.
 
 ## Standalone artifacts (no site root)
 
@@ -71,7 +88,7 @@ When a second artifact appears, the skill upgrades:
 1. Create site root structure: `site-root/index.html`, `site-root/artifacts/`, `site-root/.folio/`
 2. Move existing artifact(s) into `site-root/artifacts/<slug>/`
 3. Write `.folio/site.json` by reading the stamps from each artifact's HTML
-4. Generate the site index from `site.json`
+4. Generate the site index: `node <folio-skill>/scripts/gen-index.js <site-root>`
 
 No rework — the artifacts themselves don't change; they just gain a parent.
 
@@ -79,10 +96,10 @@ No rework — the artifacts themselves don't change; they just gain a parent.
 
 1. Build the artifact at `site-root/artifacts/<slug>/index.html`
 2. Add an entry to `.folio/site.json` `artifacts` array (including the per-artifact ledger)
-3. Regenerate the stamp and index from `site.json` (derivation rule — no triple-write)
+3. Regenerate the index: `node <folio-skill>/scripts/gen-index.js <site-root>` (derivation rule — no triple-write)
 4. Re-publish the whole site root (see `verbs/publish.md`)
 
-The index updates automatically because it derives from the manifest.
+The index updates automatically because it derives from the manifest via the generator.
 
 ## Domain naming
 
