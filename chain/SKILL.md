@@ -29,7 +29,7 @@ One canonical term per concept, used everywhere below.
 
 Use it in a repo where some or all of the chain is installed and the work spans more than one command: opening or resuming a session, planning a change, assessing what a change will break, recording a decision that should outlive the session, or handing off to another agent or another day.
 
-Do not use it to decide whether these tools are the right ones — that is a procurement question, not a craft one. Do not use it as an installer; it assumes the binaries exist. And it does not replace reading the code you are about to change. Every tool here narrows where to look. None of them licenses skipping the looking.
+Do not use it to decide whether these tools are the right ones — that is a procurement question, not a craft one. It does not install anything itself, though it does say where each tool's own install instructions live. And it does not replace reading the code you are about to change. Every tool here narrows where to look. None of them licenses skipping the looking.
 
 ## The four surfaces
 
@@ -41,6 +41,25 @@ Each tool exists because a different thing goes wrong without it.
 | brainfile | Losing the thread between sessions and between agents | "What is the state of the work, and what changed since I last looked?" | Local file |
 | cymbal | Changing code on a guess about structure | "What does this touch, and what breaks if I change it?" | Local, indexed |
 | ketch | Acting on absent or stale external knowledge | "What does the world outside this repo say?" | Network, slow |
+
+## When a tool is missing
+
+Establish what is actually present before planning around it. `command -v ketch cymbal recoil brainfile` answers it in one call, and each tool answers `--version`. Do not infer a tool's absence from one failed command, and do not infer its presence from this skill being loaded.
+
+Never guess an install command. Install methods differ by platform and change between releases, and a fabricated one-liner is the worst possible failure here — it either errors, or it succeeds at installing something else. Send the operator to the tool's own instructions:
+
+| Tool | Install instructions |
+| --- | --- |
+| ketch | <https://ketch.run/#install> |
+| cymbal | <https://cymbal.sh/#install> |
+| recoil | <https://github.com/1broseidon/recoil#install> |
+| brainfile | <https://brainfile.md/quick-start> |
+
+If ketch is one of the tools you do have, it can read the others' pages for you — `ketch scrape https://cymbal.sh/#install` returns the page as clean markdown, install section included, so the chain bootstraps itself rather than sending you to a browser. The fragment does not narrow the output; you get the whole page and read the install heading out of it. This works in one direction only: nothing can fetch ketch's own page for you if ketch is what is missing.
+
+**Installed is not the same as ready.** Each tool has a first-run step in a new repo, and skipping it produces empty results that read like real ones: `cymbal index .` builds the symbol index, `recoil setup` bootstraps project memory in one step, `brainfile init` creates `.brainfile/brainfile.md`. An unindexed repo will answer `cymbal impact` with nothing, which is not the same answer as "nothing calls this."
+
+**Partial chains still work.** Nothing here depends on anything else, so a missing tool costs you exactly one surface, not the workflow. Say which one you lost and keep going: without recoil you cannot know what was already settled, so carry decisions in the task description instead; without cymbal, blast radius drops to what you can read, so scope the change smaller and say why. Name the gap rather than quietly proceeding as if the surface had answered.
 
 ## Reach order
 
@@ -137,7 +156,8 @@ Before calling chain work done, confirm:
 - Every decision meant to outlive the session was written with `--claim-key`, and every correction used `supersede` rather than a second memory.
 - Research worth keeping was tagged; task state that changed was written back.
 - The session closed with a handoff naming a concrete next action, not a summary of what happened.
-- No command in your output was invented. Every flag came from the tool's own `--help`.
+- Any surface that returned nothing was actually initialized for this repo. An unindexed cymbal and an empty brainfile both answer like a clean bill of health.
+- No command in your output was invented. Every flag came from the tool's own `--help`, and no install command was reproduced from memory.
 
 ## References
 

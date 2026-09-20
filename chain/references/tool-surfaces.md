@@ -4,12 +4,14 @@ The command surface of each chain tool, captured from its own `--help`. Everythi
 
 Captured 2026-09-19 against:
 
-| Tool | Version | Home |
-| --- | --- | --- |
-| ketch | `v0.17.2` | [ketch.run](https://ketch.run) |
-| cymbal | `v0.15.0` | [cymbal.sh](https://cymbal.sh) |
-| recoil | `58cbc4d` (2026-07-29) | [github.com/1broseidon/recoil](https://github.com/1broseidon/recoil) |
-| brainfile | `0.20.0` | [brainfile.md](https://brainfile.md) |
+| Tool | Version | Home | Install instructions |
+| --- | --- | --- | --- |
+| ketch | `v0.17.2` | [ketch.run](https://ketch.run) | <https://ketch.run/#install> |
+| cymbal | `v0.15.0` | [cymbal.sh](https://cymbal.sh) | <https://cymbal.sh/#install> |
+| recoil | `58cbc4d` (2026-07-29) | [github.com/1broseidon/recoil](https://github.com/1broseidon/recoil) | <https://github.com/1broseidon/recoil#install> |
+| brainfile | `0.20.0` | [brainfile.md](https://brainfile.md) | <https://brainfile.md/quick-start> |
+
+Read install instructions from those pages rather than reproducing them here. Install methods change between releases, and a stale install command in a skill file is worse than none.
 
 These tools move. Treat this file as a map, not a contract: if a flag does not behave as described, run `<tool> <command> --help` and trust that instead. A skill that cites a flag the binary no longer has is worse than one that cites nothing.
 
