@@ -12,6 +12,7 @@ Each subdirectory is a self-contained skill with its own `SKILL.md` and referenc
 | [scribe](scribe/) | `0.3.1` | Documentation craft skill for project docs that match the code and read well. Write, audit, sync, or extract READMEs, API references, tutorials, how-tos, explanations, and in-code docs — source-true and drift-aware. |
 | [prompt-mechanics](prompt-mechanics/) | `0.1.0` | Prompt-engineering skill for system prompts, agent instructions, and other skills. Engineer prompts against how LLMs actually process text: name the mechanism behind every change and verify against it, not by feel. |
 | [folio](folio/) | `0.2.6` | Static artifact craft skill for self-contained HTML/CSS/JS documents — docs, sheets, dashboards, explainers, slides, tools, and landing pages. Durable, shareable web deliverables, local-first; temporary public link via tunnel (localhost.run), optional durable publish to Surge, GitHub Pages, or Cloudflare. Static-only, manifest-honest, visually grounded. |
+| [chain](chain/) | `0.1.0` | Orchestration skill for agent toolchains covering research, code navigation, memory, and task state — the ketch/cymbal/recoil/brainfile set. Reach order (settled knowledge before local code before the network), write-back so the next session inherits the work, evidence over recall. |
 
 ## Install
 
@@ -55,6 +56,9 @@ The `skills` CLI is documented at [skills.sh/docs/cli](https://skills.sh/docs/cl
 │   ├── SKILL.md
 │   └── references/
 ├── folio/             # static HTML artifact craft skill
+│   ├── SKILL.md
+│   └── references/
+├── chain/             # agent toolchain orchestration skill
 │   ├── SKILL.md
 │   └── references/
 ├── scripts/           # repo maintenance scripts
