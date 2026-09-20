@@ -13,6 +13,8 @@ Captured 2026-09-19 against:
 
 Read install instructions from those pages rather than reproducing them here. Install methods change between releases, and a stale install command in a skill file is worse than none.
 
+On macOS and Linux, `curl -fsSL https://chain.sh/bootstrap.sh | sh` installs ketch, cymbal and recoil from their latest releases with checksum verification, and brainfile via npm. Windows is not covered there; cymbal and recoil each ship an `install.ps1`, and ketch and brainfile install through npm.
+
 These tools move. Treat this file as a map, not a contract: if a flag does not behave as described, run `<tool> <command> --help` and trust that instead. A skill that cites a flag the binary no longer has is worse than one that cites nothing.
 
 ## ketch — research

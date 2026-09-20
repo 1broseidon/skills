@@ -46,7 +46,15 @@ Each tool exists because a different thing goes wrong without it.
 
 Establish what is actually present before planning around it. `command -v ketch cymbal recoil brainfile` answers it in one call, and each tool answers `--version`. Do not infer a tool's absence from one failed command, and do not infer its presence from this skill being loaded.
 
-Never guess an install command. Install methods differ by platform and change between releases, and a fabricated one-liner is the worst possible failure here — it either errors, or it succeeds at installing something else. Send the operator to the tool's own instructions:
+Never guess an install command. Install methods differ by platform and change between releases, and a fabricated one-liner is the worst possible failure here — it either errors, or it succeeds at installing something else.
+
+On macOS and Linux one command installs the set, and it is a plain shell script the operator can read before running:
+
+```sh
+curl -fsSL https://chain.sh/bootstrap.sh | sh
+```
+
+It resolves each tool's latest release, verifies every archive against that release's `checksums.txt`, refuses to install on any mismatch, and never uses sudo. brainfile goes through npm because it ships no binary. `--dry-run` shows what it would do; `--only cymbal,recoil` installs a subset. It does not cover Windows. For Windows, or for any one tool on its own, send the operator to the tool's own instructions:
 
 | Tool | Install instructions |
 | --- | --- |
