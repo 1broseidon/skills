@@ -1,12 +1,12 @@
 ---
 name: chain
-description: "Orchestration skill for agent toolchains that cover research, code navigation, memory, and task state — the ketch/cymbal/recoil/brainfile set. Use when working in a repo where these tools are installed and the task spans more than one command: starting or resuming a session, planning a change, assessing blast radius, recording a decision, or handing off. Enforces reach order (settled knowledge before local code before the network), write-back so the next session inherits the work, and evidence over recall. Not for choosing between these tools and alternatives, not an installer, and not a substitute for reading the code you are about to change."
+description: "Orchestration skill for agent toolchains that cover research, code navigation, memory, and task state — the ketch/cymbal/recoil/brainfile set. Use when working in a repo where any of these tools are installed and the task spans more than one command: starting or resuming a session, planning a change, assessing blast radius, recording a decision, or handing off. Enforces reach order (settled knowledge, then task state, then local code, then the network), write-back so the next session inherits the work, and evidence over recall. Not for choosing between these tools and alternatives, not an installer, and not a substitute for reading the code you are about to change."
 version: 0.1.0
 ---
 
 # Chain
 
-Answer the question you are actually blocked on, with the cheapest source that can answer it. The default failure mode in agentic coding is not ignorance — it is asking the wrong source first: searching the web for something the repo already records, re-deciding something the project settled last month, or editing a symbol without knowing what calls it. Four tools cover four distinct failure modes. The craft is knowing which one you are in, reaching in cost order, and writing back so the next session starts further along than this one did.
+Answer the question you are actually blocked on, with the cheapest source that can answer it. The default failure mode in agentic coding is not ignorance — it is asking the wrong source first: searching the web for something the repo already records, re-deciding something the project settled last month, or editing a symbol without knowing what calls it. Four tools cover four distinct failure modes. The craft is knowing which one you are in, following the reach order, and writing back so the next session starts further along than this one did.
 
 Nothing here depends on anything else. Each tool is useful alone. This skill is about the seams: where one tool's output becomes the next one's input, and where a session opens and closes.
 
@@ -27,7 +27,7 @@ One canonical term per concept, used everywhere below.
 
 ## When this applies
 
-Use it in a repo where some or all of the chain is installed and the work spans more than one command: opening or resuming a session, planning a change, assessing what a change will break, recording a decision that should outlive the session, or handing off to another agent or another day.
+Use it in a repo where some or all of the chain is installed and the work spans more than one command: opening or resuming a session, planning a change, assessing blast radius, writing back a decision that should outlive the session, or handing off to another agent or another day.
 
 Do not use it to decide whether these tools are the right ones — that is a procurement question, not a craft one. It does not install anything itself, though it does say where each tool's own install instructions live. And it does not replace reading the code you are about to change. Every tool here narrows where to look. None of them licenses skipping the looking.
 
@@ -41,6 +41,76 @@ Each tool exists because a different thing goes wrong without it.
 | brainfile | Losing the thread between sessions and between agents | "What is the state of the work, and what changed since I last looked?" | Local file |
 | cymbal | Changing code on a guess about structure | "What does this touch, and what breaks if I change it?" | Local, indexed |
 | ketch | Acting on absent or stale external knowledge | "What does the world outside this repo say?" | Network, slow |
+
+## Reach order
+
+Consult surfaces cheapest-and-most-decisive first. The order is not stylistic: each step can end the task, and each is more project-specific than the one after it.
+
+1. **recoil** — has this already been settled? A hit here can end the work outright, and it is the only surface that can tell you your plan contradicts a standing decision. `recoil wake` to open with bounded context; `recoil check "<proposed action>"` before acting against anything remembered.
+2. **brainfile** — what is already in flight? `brainfile brief --agent <name>` reports what changed since that agent last checked in, which is the difference between resuming work and duplicating it.
+3. **cymbal** — what does the code actually say? `cymbal investigate <symbol>` to understand one thing, `cymbal impact <symbol>` before changing it, `cymbal changed` to scope what you have already edited.
+4. **ketch** — and only now, what is genuinely external? `ketch search`, `ketch docs`, `ketch code` for library behaviour, upstream docs, and prior art that cannot be derived from this repo.
+
+The common inversion is reaching for the network first. It is the reflex, and it is the most expensive, least project-specific source available. A web search cannot tell you that this codebase already solved the problem, that the team rejected that approach in March, or that the symbol you are about to edit has fifty callers.
+
+## Worked trace
+
+One pass through the chain. Copy this shape.
+
+```
+Task: swap the per-file parser cache.
+
+Session open       recoil wake --max-chars 1600
+                   -> bounded starter context; nothing in it touches the parser cache.
+Settled knowledge  recoil check "replace the per-file parser cache"
+                   -> active decision, claim-key parser-cache: bounded by bytes, not entry count.
+                      Constrains the design; does not block the work.
+Task state         brainfile brief --agent claude
+                   -> nothing in flight touching the parser. Not a resume.
+Local code         cymbal impact TreeSitter
+                   -> 50 callers, 80 refs across 5 files; 2 production, 78 test.
+                      Blast radius is test-heavy, so the risk is fixture churn, not runtime.
+External           ketch search "tree-sitter incremental parsing cache invalidation" --tag parser-cache
+                   -> upstream documents incremental reparse; confirms the invalidation
+                      boundary. Reached last, only for what the repo could not answer,
+                      and tagged so the next session does not search it again.
+
+Write-back
+  recoil decide --claim-key parser-cache "the cache stays bounded by bytes, not entry count"
+  brainfile add --title "Swap the per-file parser cache" --files parser/cache.go
+  recoil handoff --agent claude --next-step "wire the byte-bounded cache into parser.New"
+
+Not done: no edit yet. The trace establishes the constraint, the blast radius, and the
+upstream behaviour. Assumption: the 78 test refs are fixtures, not behavioural assertions —
+if they assert, the change is larger than scoped.
+```
+
+The shape is the point: each surface either ends the task, constrains it, or hands to the next. A step that changes nothing about what you do next was not worth running.
+
+## Write-back discipline
+
+A chain consulted but never fed decays into four read-only lookups. Every surface has a write side, and the write-back is what makes the next session cheaper.
+
+| Surface | Write | When |
+| --- | --- | --- |
+| recoil | `recoil decide --claim-key <family> "<decision>"` | A decision is made that should outlive the session |
+| recoil | `recoil supersede <old-id> "<replacement>"` | Something remembered is now wrong — supersede rather than add a contradicting memory |
+| recoil | `recoil handoff --agent <name> --next-step "<action>"` | Closing a session or a compaction window |
+| brainfile | `brainfile add`, `brainfile note`, `brainfile complete` | Work is identified, progressed, or finished |
+| cymbal | `cymbal index .` | The index is stale or the repo is new |
+| ketch | `--tag <name>` on `search`, `docs`, `code` | A search result you acted on |
+
+Two of these are load-bearing and routinely skipped. `--claim-key` is what lets a later decision supersede this one instead of sitting beside it as a contradiction, so a decision written without one is a decision that cannot be revised cleanly. And `recoil supersede` exists precisely so that being wrong is recorded as a correction rather than as a second opinion.
+
+## Seams
+
+Where one tool's output is the next one's input. These are the joins worth knowing by heart.
+
+- **cymbal `changed` → brainfile.** The blast radius of your current edits is the honest scope of the task. `cymbal changed --base main` produces it; that is what belongs in the task's files and description, not a guess written before the work started.
+- **ketch `--tag` → the next session.** Tagged research survives the session that found it. Untagged research is re-searched by whoever comes next, at full network cost.
+- **recoil `check` → the plan.** Run it against the proposed action, not against a topic. `recoil check "drop the compat shim"` audits the actual thing you are about to do; a topic search just returns reading.
+- **brainfile `brief` → the session opener.** Per-agent by design, so parallel agents each get what *they* missed rather than a shared firehose.
+- **recoil `handoff` → brainfile.** Overlapping but not redundant: handoff carries reasoning and next steps for the next agent, brainfile carries the durable task board. Write the reasoning to recoil and the work item to brainfile; do not paraphrase one into the other.
 
 ## When a tool is missing
 
@@ -61,80 +131,13 @@ It resolves each tool's latest release, verifies every archive against that rele
 | ketch | <https://ketch.run/#install> |
 | cymbal | <https://cymbal.sh/#install> |
 | recoil | <https://github.com/1broseidon/recoil#install> |
-| brainfile | <https://brainfile.md/quick-start> |
+| brainfile | <https://brainfile.md/#install> |
 
-If ketch is one of the tools you do have, it can read the others' pages for you — `ketch scrape https://cymbal.sh/#install` returns the page as clean markdown, install section included, so the chain bootstraps itself rather than sending you to a browser. The fragment does not narrow the output; you get the whole page and read the install heading out of it. This works in one direction only: nothing can fetch ketch's own page for you if ketch is what is missing.
+The ketch, cymbal and brainfile pages each publish `llms.txt`, a short index, and `llms-full.txt`, the whole manual as plain text with its Install section. Fetch `https://cymbal.sh/llms-full.txt`, or the ketch or brainfile equivalent, with anything that reads a URL, `curl` and `ketch scrape` alike, and read the Install heading out of it rather than sending the operator to a browser. recoil has no manual site; its README on GitHub is the source.
 
 **Installed is not the same as ready.** Each tool has a first-run step in a new repo, and skipping it produces empty results that read like real ones: `cymbal index .` builds the symbol index, `recoil setup` bootstraps project memory in one step, `brainfile init` creates `.brainfile/brainfile.md`. An unindexed repo will answer `cymbal impact` with nothing, which is not the same answer as "nothing calls this."
 
 **Partial chains still work.** Nothing here depends on anything else, so a missing tool costs you exactly one surface, not the workflow. Say which one you lost and keep going: without recoil you cannot know what was already settled, so carry decisions in the task description instead; without cymbal, blast radius drops to what you can read, so scope the change smaller and say why. Name the gap rather than quietly proceeding as if the surface had answered.
-
-## Reach order
-
-Consult surfaces cheapest-and-most-decisive first. The order is not stylistic: each step can end the task, and each is more project-specific than the one after it.
-
-1. **recoil** — has this already been settled? A hit here can end the work outright, and it is the only surface that can tell you your plan contradicts a standing decision. `recoil wake` to open with bounded context; `recoil check "<proposed action>"` before acting against anything remembered.
-1. **brainfile** — what is already in flight? `brainfile brief --agent <name>` reports what changed since that agent last checked in, which is the difference between resuming work and duplicating it.
-1. **cymbal** — what does the code actually say? `cymbal investigate <symbol>` to understand one thing, `cymbal impact <symbol>` before changing it, `cymbal changed` to scope what you have already edited.
-1. **ketch** — and only now, what is genuinely external? `ketch search`, `ketch docs`, `ketch code` for library behaviour, upstream docs, and prior art that cannot be derived from this repo.
-
-The common inversion is reaching for the network first. It is the reflex, and it is the most expensive, least project-specific source available. A web search cannot tell you that this codebase already solved the problem, that the team rejected that approach in March, or that the symbol you are about to edit has fifty callers.
-
-## Worked trace
-
-One pass through the chain. Copy this shape.
-
-```
-Task: swap the per-file parser cache.
-
-Settled knowledge  recoil check "replace the per-file parser cache"
-                   -> active decision, claim-key parser-cache: bounded by bytes, not entry count.
-                      Constrains the design; does not block the work.
-Task state         brainfile brief --agent claude
-                   -> nothing in flight touching the parser. Not a resume.
-Local code         cymbal impact TreeSitter
-                   -> 50 callers, 80 refs across 5 files; 2 production, 78 test.
-                      Blast radius is test-heavy, so the risk is fixture churn, not runtime.
-External           ketch search "tree-sitter incremental parsing cache invalidation"
-                   -> upstream documents incremental reparse; confirms the invalidation
-                      boundary. Reached last, and only for what the repo could not answer.
-
-Write-back
-  recoil decide --claim-key parser-cache "the cache stays bounded by bytes, not entry count"
-  brainfile add --title "Swap the per-file parser cache" --files parser/cache.go
-  recoil handoff --agent claude --next-step "wire the byte-bounded cache into parser.New"
-
-Not done: no edit yet. The trace establishes the constraint, the blast radius, and the
-upstream behaviour. Assumption: the 78 test refs are fixtures, not behavioural assertions —
-if they assert, the change is larger than scoped.
-```
-
-The shape is the point: each surface either ends the task, constrains it, or hands to the next. A step that changes nothing about what you do next was not worth running.
-
-## Write-back discipline
-
-A chain consulted but never fed decays into four read-only lookups. Every surface has a write side, and the write is what makes the next session cheaper.
-
-| Surface | Write | When |
-| --- | --- | --- |
-| recoil | `recoil decide --claim-key <family> "<decision>"` | A decision is made that should outlive the session |
-| recoil | `recoil supersede <old-id> "<replacement>"` | Something remembered is now wrong — supersede rather than add a contradicting memory |
-| recoil | `recoil handoff --agent <name> --next-step "<action>"` | Closing a session or a compaction window |
-| brainfile | `brainfile add`, `brainfile note`, `brainfile complete` | Work is identified, progressed, or finished |
-| cymbal | `cymbal index .` | The index is stale or the repo is new |
-| ketch | `--tag <name>` on `search`, `docs`, `code` | Research worth carrying into a later session |
-
-Two of these are load-bearing and routinely skipped. `--claim-key` is what lets a later decision supersede this one instead of sitting beside it as a contradiction, so a decision written without one is a decision that cannot be revised cleanly. And `recoil supersede` exists precisely so that being wrong is recorded as a correction rather than as a second opinion.
-
-## Seams
-
-Where one tool's output is the next one's input. These are the joins worth knowing by heart.
-
-- **cymbal `changed` → brainfile.** The blast radius of your current edits is the honest scope of the task. `cymbal changed --base main` produces it; that is what belongs in the task's files and description, not a guess written before the work started.
-- **ketch `--tag` → the next session.** Tagged research survives the session that found it. Untagged research is re-searched by whoever comes next, at full network cost.
-- **recoil `check` → the plan.** Run it against the proposed action, not against a topic. `recoil check "drop the compat shim"` audits the actual thing you are about to do; a topic search just returns reading.
-- **brainfile `brief` → the session opener.** Per-agent by design, so parallel agents each get what *they* missed rather than a shared firehose.
-- **recoil `handoff` → brainfile.** Overlapping but not redundant: handoff carries reasoning and next steps for the next agent, brainfile carries the durable task board. Write the reasoning to recoil and the work item to brainfile; do not paraphrase one into the other.
 
 ## BAD/GOOD
 
@@ -156,16 +159,19 @@ GOOD: `recoil handoff --agent <name> --next-step "<the actual next action>"` bef
 
 ## Verification checklist
 
-Before calling chain work done, confirm:
+Before calling chain work done, confirm each of these. A "no" means the work is not done: run the missing step, then check again.
 
 - The cheapest surface that could have answered the question was consulted first; the network was not the opener.
 - Any action taken against a remembered decision was run past `recoil check` and its verdict respected.
 - Blast radius came from `cymbal impact` or `cymbal changed`, not from reading a couple of files and estimating.
-- Every decision meant to outlive the session was written with `--claim-key`, and every correction used `supersede` rather than a second memory.
-- Research worth keeping was tagged; task state that changed was written back.
+- Every decision meant to outlive the session was written with `--claim-key`.
+- Every correction used `supersede` rather than a second memory.
+- Every search result you acted on was tagged.
+- Task state that changed was written back.
 - The session closed with a handoff naming a concrete next action, not a summary of what happened.
 - Any surface that returned nothing was actually initialized for this repo. An unindexed cymbal and an empty brainfile both answer like a clean bill of health.
-- No command in your output was invented. Every flag came from the tool's own `--help`, and no install command was reproduced from memory.
+- Every flag in a command you ran came from the tool's own `--help`.
+- No install command was reproduced from memory.
 
 ## References
 
