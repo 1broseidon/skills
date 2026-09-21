@@ -130,10 +130,10 @@ It resolves each tool's latest release, verifies every archive against that rele
 | --- | --- |
 | ketch | <https://ketch.run/#install> |
 | cymbal | <https://cymbal.sh/#install> |
-| recoil | <https://github.com/1broseidon/recoil#install> |
+| recoil | <https://recoil.sh/#install> |
 | brainfile | <https://brainfile.md/#install> |
 
-The ketch, cymbal and brainfile pages each publish `llms.txt`, a short index, and `llms-full.txt`, the whole manual as plain text with its Install section. Fetch `https://cymbal.sh/llms-full.txt`, or the ketch or brainfile equivalent, with anything that reads a URL, `curl` and `ketch scrape` alike, and read the Install heading out of it rather than sending the operator to a browser. recoil has no manual site; its README on GitHub is the source.
+Each of the four sites publishes the same machine-readable files beside its manual: `manifest.json`, whose `install` object carries the manual's own install command (`command`), the install page (`page`) and any install scripts the site serves (`scripts.sh`, `scripts.ps1`); `llms.txt`, a short index; and `llms-full.txt`, the whole manual as plain text with its Install section. Fetch `https://recoil.sh/manifest.json`, or the ketch, cymbal or brainfile equivalent, with anything that reads a URL, `curl` and `ketch scrape` alike, and read the install command out of it rather than sending the operator to a browser.
 
 **Installed is not the same as ready.** Each tool has a first-run step in a new repo, and skipping it produces empty results that read like real ones: `cymbal index .` builds the symbol index, `recoil setup` bootstraps project memory in one step, `brainfile init` creates `.brainfile/brainfile.md`. An unindexed repo will answer `cymbal impact` with nothing, which is not the same answer as "nothing calls this."
 

@@ -8,8 +8,10 @@ Captured 2026-09-19 against:
 | --- | --- | --- |
 | ketch | `v0.17.2` | [ketch.run](https://ketch.run) |
 | cymbal | `v0.15.0` | [cymbal.sh](https://cymbal.sh) |
-| recoil | `58cbc4d` (2026-07-29) | [github.com/1broseidon/recoil](https://github.com/1broseidon/recoil) |
+| recoil | `v0.1.1` | [recoil.sh](https://recoil.sh) |
 | brainfile | `0.20.0` | [brainfile.md](https://brainfile.md) |
+
+recoil was re-read on 2026-09-21 against `v0.1.1`, its first published release; the flags below match it.
 
 Install guidance lives in SKILL.md under "When a tool is missing", in one place so it cannot drift from this file.
 
@@ -80,6 +82,7 @@ Local-first memory in SQLite with FTS search. Global flags: `-d/--db`, `--json`.
 | `wake` | Print bounded starter memory context |
 | `search` | Search memories with SQLite FTS |
 | `remember` | Remember useful project context with deterministic role inference |
+| `add` | Add a verbatim memory, with no role inference |
 | `decide` | Add a decision memory with a required claim key |
 | `check` | Audit whether a remembered decision is still safe to act on |
 | `supersede` | Create a new active memory that supersedes an old one |
@@ -87,7 +90,7 @@ Local-first memory in SQLite with FTS search. Global flags: `-d/--db`, `--json`.
 | `mine` | Import conservative project file memories |
 | `claims` | List claim-key families in scope |
 | `show`, `list`, `mark`, `forget` | Read one, list scope, update lifecycle, tombstone or purge |
-| `setup`, `init`, `migrate`, `repair`, `backup`, `status` | Bootstrap and database maintenance |
+| `setup`, `init`, `migrate`, `repair`, `backup`, `status`, `config`, `version` | Bootstrap, database maintenance, effective configuration, build version |
 | `instruct`, `instructions` | Print the agent contract and integration instructions |
 | `export`, `profile`, `embed`, `eval` | Claim-family export, entity profiles, embedding sidecars, retrieval eval |
 | `channel`, `relay`, `swarm`, `session-evidence`, `tray`, `hook`, `mcp` | Sharing, workspace health, integrations |
